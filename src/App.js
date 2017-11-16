@@ -1,35 +1,32 @@
 // @flow
 
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import React from 'react';
+import styled from 'styled-components/native';
 
-export default class App extends Component<{}> {
+import { OnboardingRouter, MainRouter } from './router';
+
+const MainContainer = styled.View`
+  flex: 1;
+`;
+
+export default class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      loggedIn: false,
+    };
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-      </View>
+      <MainContainer>
+        {
+          this.state.loggedIn ?
+            <MainRouter /> :
+            <OnboardingRouter />
+        }
+      </MainContainer>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-});
