@@ -69,7 +69,6 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "SplashScreen2x-2.png",
       "minimum-system-version" : "7.0",
       "subtype" : "retina4",
       "scale" : "2x"
