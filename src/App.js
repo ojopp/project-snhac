@@ -3,6 +3,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 
+import firebaseApp from './firebase/firebaseConfig';
 import { OnboardingRouter, MainRouter } from './router';
 
 const MainContainer = styled.View`
@@ -14,8 +15,46 @@ export default class App extends React.Component {
     super();
 
     this.state = {
-      loggedIn: false,
+      loggedIn: true,
     };
+
+    this.login = this.login.bind(this);
+    this.signUp = this.signUp.bind(this);
+  }
+
+  signUp = (email, password) => {
+    firebaseApp.auth().createUserWithEmailAndPassword(email, password)
+      .catch((error) => {
+        // Handle Errors here.
+        // let errorCode = error.code;
+        let errorMessage = error.message;
+        if (errorMessage === 'The email address is badly formatted.') {
+          errorMessage = 'Invalid email address';
+        }
+      })
+      .then(() => {
+        this.setState({ loggedIn: true });
+      });
+  }
+
+  login = (email, password) => {
+    firebaseApp.auth().signInWithEmailAndPassword(email, password)
+      .catch((error) => {
+        let errorMessage = error.message;
+        if (errorMessage === 'The email address is badly formatted.') {
+          errorMessage = 'Invalid email address';
+        }
+      })
+      .then(() => {
+        this.setState({ loggedIn: true });
+      });
+  }
+
+  signOut = () => {
+    firebaseApp.auth().signOut()
+      .then(() => {
+        this.setState({ loggedIn: false });
+      });
   }
 
   render() {
@@ -24,7 +63,7 @@ export default class App extends React.Component {
         {
           this.state.loggedIn ?
             <MainRouter /> :
-            <OnboardingRouter />
+            <OnboardingRouter screenProps={{ login: this.login, signUp: this.signUp }} />
         }
       </MainContainer>
     );
