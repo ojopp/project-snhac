@@ -30,7 +30,7 @@ export default () => (
     <StatusBar barStyle="light-content" />
     <View style={styles.container}>
       <Text style={styles.txt}>
-        Home
+        Training
       </Text>
     </View>
   </View>
