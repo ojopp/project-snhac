@@ -5,106 +5,130 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StatusBar, ScrollView,
+  ScrollView,
+  Image,
 } from 'react-native';
-import firebaseApp from '../firebase/firebaseConfig';
 
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#ff8c00',
     paddingTop: 20,
-
+  },
+  scrollCont: {
+    flex: 1,
+    backgroundColor: '#ff8c00',
+  },
+  logo: {
+    width: 175,
+    height: 175,
+  },
+  inputContainer: {
+    marginTop: 15,
+    alignItems: 'center',
   },
   input: {
-    height: 50,
+    height: 36,
     marginTop: 10,
-    marginHorizontal: 20,
-    paddingLeft: 20,
-    alignSelf: 'stretch',
-    backgroundColor: '#ffac49',
-    shadowColor: '#000000',
-    shadowOffset: { width: 4, height: 4 },
-    shadowRadius: 2,
-    shadowOpacity: 0.1,
-    borderRadius: 6,
-    color: '#ffffff',
+    width: 300,
+    paddingLeft: 12,
+    backgroundColor: '#232A3000',
+    borderRadius: 18,
+    borderColor: '#232A30',
+    borderWidth: 2,
+    color: '#232A30',
+    fontSize: 16,
   },
   button: {
-    height: 50,
-    marginTop: 30,
-    marginHorizontal: 60,
+    height: 36,
+    width: 100,
     padding: 4,
-    alignSelf: 'stretch',
-    backgroundColor: '#000000',
-    borderRadius: 8,
-
+    alignSelf: 'center',
+    backgroundColor: '#232A30dd',
+    borderRadius: 18,
+    alignItems: 'center',
+    shadowColor: '#232A30',
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
   },
   buttonText: {
     flex: 1,
-    padding: 10,
-    alignSelf: 'center',
     color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
-
+    fontSize: 16,
+    paddingTop: 4,
+  },
+  errText: {
+    color: '#ff0000',
+    backgroundColor: '#00000000',
+  },
+  gradientBg: {
+    alignSelf: 'center',
+    flex: 1,
+    width: '100%',
+  },
+  innerContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  helpText: {
+    color: '#232A30',
+    backgroundColor: '#ffffff00',
+  },
+  help: {
+    paddingTop: 20,
+    alignSelf: 'center',
   },
 });
 
+const SNHACLogoSource = require('../assets/Logo-Large.png');
+
+const BackgroundSource = require('../assets/OnbordingBackground.png');
+
 export default class Login extends React.Component {
-    static navigationOptions = {
-      title: 'Login',
-      headerTintColor: '#ffffff',
-      headerStyle: {
-        backgroundColor: '#000000',
-      },
+  constructor() {
+    super();
+    this.state = {
+      email: '',
+      password: '',
+      incorrectPassword: '',
+      invalidEmail: '',
     };
+  }
 
-    constructor() {
-      super();
-      this.state = {
-        email: '',
-        paasword: '',
-      };
+
+  onPressLogin() {
+    if (this.state.email != null) {
+      if (this.state.password != null) {
+        this.props.screenProps.login(this.state.email, this.state.password);
+      } else {
+        this.state.incorrectPassword = 'please enter your password';
+      }
+    } else {
+      this.setState.invalidEmail = 'Please enter your email address';
     }
+  }
 
 
-    onPressLogin() {
-      const { dispatch, navigate } = this.props.navigation;
-      // firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
-      // Handle Errors here.
-      //  var errorCode = error.code;
-      //  var errorMessage = error.message;
-      //  alert(errorMessage)
-      // ...
-      // });
-      // this.props.navigation.navigate('HomeApp')
-
-      const navigationAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: 'HomeApp' }),
-        ],
-      });
-
-
-      dispatch(navigationAction);
-    }
-
-
-    render() {
-      return (
-        <ScrollView style={{ flex: 1, backgroundColor: '#ff8c00' }} keyboardShouldPersistTaps="never" scrollEnabled={false}>
-          <View behavior="padding" style={styles.container}>
-            <StatusBar barStyle="light-content" />
+  render() {
+    const { navigate } = this.props.navigation;
+    return (
+      <ScrollView style={styles.scrollCont} keyboardShouldPersistTaps="never" scrollEnabled={false}>
+        <Image style={styles.gradientBg} source={BackgroundSource} resizeMode="stretch" />
+        <View style={styles.innerContainer}>
+          <View style={styles.container}>
+            <Image style={styles.logo} source={SNHACLogoSource} resizeMode="stretch" />
+          </View>
+          <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
               onChangeText={value => this.setState({ email: value })}
               placeholder="Email"
-              placeholderTextColor="#ffffffa0"
+              placeholderTextColor="#232A3090"
               autoCapitalize="none"
               keyboardType="email-address"
               autoCorrect={false}
@@ -114,21 +138,35 @@ export default class Login extends React.Component {
               style={styles.input}
               onChangeText={value => this.setState({ password: value })}
               placeholder="Password"
-              placeholderTextColor="#ffffffa0"
+              placeholderTextColor="#232A3090"
               secureTextEntry
               underlineColorAndroid="transparent"
             />
-            <TouchableOpacity
-              style={styles.button}
-              onPress={this.onPressLogin.bind(this)}
-            >
-              <Text style={styles.buttonText}>
-              Log in
-              </Text>
-            </TouchableOpacity>
+            <Text style={styles.errText}>
+              {this.state.invalidEmail}
+            </Text>
+            <Text style={styles.errText}>
+              {this.state.incorrectPassword}
+            </Text>
           </View>
-        </ScrollView>
-      );
-    }
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.onPressLogin.bind(this)}
+          >
+            <Text style={styles.buttonText}>
+                Log in
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigate('ForgotPassword')}>
+            <View style={styles.help}>
+              <Text style={styles.helpText}>
+                Forgot your password?
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    );
+  }
 }
 

@@ -5,139 +5,169 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StatusBar, ScrollView,
+  ScrollView,
+  Image,
+  Button,
 } from 'react-native';
-import firebaseApp from '../firebase/firebaseConfig';
+
+import Input from '../components/Input';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#ff8c00',
-    paddingTop: 20,
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    paddingTop: 25,
+  },
+  inputContainer: {
+    marginTop: 15,
   },
   input: {
-    height: 50,
+    height: 36,
     marginTop: 10,
-    marginHorizontal: 20,
-    paddingLeft: 20,
-    alignSelf: 'stretch',
-    backgroundColor: '#ffac49',
-    shadowColor: '#000000',
-    shadowOffset: { width: 4, height: 4 },
-    shadowRadius: 2,
-    shadowOpacity: 0.1,
-    borderRadius: 6,
-    color: '#ffffff',
-    fontSize: 18,
+    width: 300,
+    paddingLeft: 12,
+    backgroundColor: '#232A3000',
+    borderRadius: 18,
+    borderColor: '#232A30',
+    borderWidth: 2,
+    color: '#232A30ee',
+    fontSize: 16,
   },
   button: {
-    height: 50,
-    marginTop: 5,
-    marginHorizontal: 60,
+    height: 36,
+    width: 100,
     padding: 4,
-    alignSelf: 'stretch',
-    backgroundColor: '#000000',
-    borderRadius: 8,
+    alignSelf: 'center',
+    backgroundColor: '#232A30dd',
+    borderRadius: 18,
+    alignItems: 'center',
+    shadowColor: '#232A30',
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
   },
   buttonText: {
     flex: 1,
-    padding: 10,
-    alignSelf: 'center',
     color: '#ffffff',
-    fontSize: 18,
+    fontSize: 16,
+    paddingTop: 4,
   },
   errText: {
-    paddingTop: 5,
     color: '#ff0000',
-    height: 20,
     backgroundColor: '#00000000',
+  },
+  gradientBg: {
+    flex: 1,
+    width: '100%',
+  },
+  helpText: {
+    color: '#232A30',
+    backgroundColor: '#ffffff00',
+  },
+  help: {
+    paddingTop: 20,
   },
 });
 
+const BackgroundSource = require('../assets/OnbordingBackground.png');
 
 export default class SignUp extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: '',
-      firstName: '',
-      lastName: '',
+      fName: '',
+      lName: '',
       email: '',
-      paasword: '',
+      p10ID: '',
+      password: '',
       confirmPassword: '',
+      err: '',
       passwordNotMatch: '',
-      invalidEmail: '',
     };
   }
 
   onPressSubmit() {
-    if (this.state.password === this.state.confirmPassword) {
-      this.props.screenProps.signUp(this.state.email, this.state.paasword);
+    if (this.state.fName !== '') {
+      if (this.state.lName !== '') {
+        if (this.state.password === this.state.confirmPassword) {
+          this.props.screenProps.signUp(this.state.email, this.state.password, this.state.fName, this.state.lName, this.state.p10ID);
+        } else {
+          this.setState({ passwordNotMatch: '* Passwords do not match *' });
+        }
+      } else {
+        this.setState({ err: 'Please enter your Last name' });
+      }
     } else {
-      this.setState({ passwordNotMatch: '* Passwords do not match *' });
+      this.setState({ err: 'Please enter your First name' });
     }
   }
 
+
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#ff8c00' }} keyboardShouldPersistTaps="never" scrollEnabled={false}>
+        <Image style={styles.gradientBg} source={BackgroundSource} resizeMode="stretch" />
         <View style={styles.container}>
-          <StatusBar barStyle="light-content" />
-          <TextInput
-            style={styles.input}
-            onChangeText={value => this.setState({ firstName: value })}
+          <Input
             placeholder="First Name"
-            placeholderTextColor="#ffffffa0"
-            underlineColorAndroid="transparent"
+            onChangeText={value => this.setState({ fName: value })}
+            value={this.state.fName}
+            autoCapitalize="sentences"
           />
-          <TextInput
-            style={styles.input}
-            onChangeText={value => this.setState({ lastName: value })}
+          <Input
             placeholder="Last Name"
-            placeholderTextColor="#ffffffa0"
-            underlineColorAndroid="transparent"
+            onChangeText={value => this.setState({ lName: value })}
+            value={this.state.lName}
+            autoCapitalize="sentences"
           />
-          <TextInput
-            style={styles.input}
-            onChangeText={value => this.setState({ email: value })}
+          <Input
+            placeholder="Athlete ID"
+            onChangeText={value => this.setState({ p10ID: value })}
+            value={this.state.p10ID}
+          />
+          <Input
             placeholder="Email"
-            placeholderTextColor="#ffffffa0"
-            autoCapitalize="none"
+            onChangeText={value => this.setState({ email: value })}
+            value={this.state.email}
             keyboardType="email-address"
-            autoCorrect={false}
-            underlineColorAndroid="transparent"
           />
-          <TextInput
-            style={styles.input}
-            onChangeText={value => this.setState({ password: value })}
+          <Input
             placeholder="Password"
-            placeholderTextColor="#ffffffa0"
+            onChangeText={value => this.setState({ password: value })}
+            value={this.state.password}
             secureTextEntry
-            underlineColorAndroid="transparent"
           />
-          <TextInput
-            style={styles.input}
+          <Input
+            placeholder="Confirm password"
             onChangeText={value => this.setState({ confirmPassword: value })}
-            placeholder="Confirm Password"
-            placeholderTextColor="#ffffffa0"
+            value={this.state.confirmPassword}
             secureTextEntry
-            returnKeyType="next"
-            underlineColorAndroid="transparent"
           />
           <Text style={styles.errText}>
-            {this.state.invalidEmail}
+            {this.state.err}
           </Text>
           <Text style={styles.errText}>
             {this.state.passwordNotMatch}
           </Text>
-          <TouchableOpacity style={styles.button} onPress={this.onPressSubmit.bind(this)}>
+          <TouchableOpacity style={styles.button} onPress={() => this.onPressSubmit()}>
             <Text style={styles.buttonText}>
-              Submit
+                Sign Up
             </Text>
           </TouchableOpacity>
-      </View>
+          <TouchableOpacity onPress={() => navigate('HowToAthleteID')}>
+            <View style={styles.help}>
+              <Text style={styles.helpText}>
+                How to find your Athlete ID
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     );
   }
