@@ -4,8 +4,20 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image,
 } from 'react-native';
+import styled from 'styled-components/native';
+
+import Logo from '../components/Logo';
+import OnbordingBackground from '../components/OnbordingBg';
+
+const Button = styled.TouchableOpacity`
+    height: 75px;
+    background-color: #00000000;
+    align-items: center;
+    justify-content: center;
+    border-top-width: 1px;
+    border-top-color: #ff8c0060;
+`;
 
 
 const styles = StyleSheet.create({
@@ -21,7 +33,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   buttonS: {
-    height: 60,
+    height: 75,
     backgroundColor: '#232A3000',
     alignItems: 'center',
     justifyContent: 'center',
@@ -29,8 +41,8 @@ const styles = StyleSheet.create({
     borderTopColor: '#ff8c0060',
   },
   buttonL: {
-    height: 60,
-    backgroundColor: '#232A3000',
+    height: 75,
+    backgroundColor: '#00000000',
     alignItems: 'center',
     justifyContent: 'center',
     borderTopWidth: 1,
@@ -53,10 +65,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const SNHACLogoSource = require('../assets/Logo-Large.png');
-
-const BackgroundSource = require('../assets/OnbordingBackground.png');
-
 export default class OnboardingHome extends React.Component {
   static navigationOptions = {
     headermode: 'none',
@@ -66,25 +74,19 @@ export default class OnboardingHome extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Image style={styles.gradientBg} source={BackgroundSource} resizeMode="stretch" />
+        <OnbordingBackground />
         <View style={styles.innerContainer} >
-          <Image style={styles.logo} source={SNHACLogoSource} resizeMode="contain" />
-          <TouchableOpacity
-            style={styles.buttonL}
-            onPress={() => navigate('Login')}
-          >
+          <Logo width="80%" height="80%" flex={1} align="center" justify="center" />
+          <Button onPress={() => navigate('Login')}>
             <Text style={styles.buttonText} >
               Log in
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonS}
-            onPress={() => navigate('SignUp')}
-          >
+          </Button>
+          <Button onPress={() => navigate('SignUp')}>
             <Text style={styles.buttonText}>
               Sign up
             </Text>
-          </TouchableOpacity>
+          </Button>
         </View>
       </View>
     );

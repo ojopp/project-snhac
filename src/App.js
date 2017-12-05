@@ -94,6 +94,16 @@ export default class App extends React.Component {
       });
   }
 
+  forgotPassword = async (email) => {
+    firebaseApp.auth().sendPasswordResetEmail(email).then(function() {
+      // Email sent.
+      console.log('Email sent')
+    }).catch(function(error) {
+      // An error happened.
+      console.log('Error')
+    });
+  }
+
   render() {
     if (this.state.render) {
       return (
@@ -102,7 +112,11 @@ export default class App extends React.Component {
           {
             this.state.loggedIn ?
               <MainRouter screenProps={{ signOut: this.signOut }} /> :
-              <OnboardingRouter screenProps={{ login: this.login, signUp: this.signUp }} />
+              <OnboardingRouter screenProps={{
+                login: this.login,
+                signUp: this.signUp,
+                forgotPassword: this.forgotPassword,
+              }} />
           }
         </MainContainer>
       );

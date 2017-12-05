@@ -1,25 +1,20 @@
 import React from 'react';
 import {
   StyleSheet,
-  TextInput,
   View,
   Text,
   TouchableOpacity,
   ScrollView,
-  Image,
-  Button,
 } from 'react-native';
 
+import OnbordingBackground from '../components/OnbordingBg';
 import Input from '../components/Input';
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+  scrollContainer: {
+    flex: 1,
     position: 'absolute',
-    width: '100%',
-    height: '100%',
-    paddingTop: 25,
+    alignSelf: 'center',
   },
   inputContainer: {
     marginTop: 15,
@@ -66,6 +61,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   helpText: {
+    alignSelf: 'center',
     color: '#232A30',
     backgroundColor: '#ffffff00',
   },
@@ -73,8 +69,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
 });
-
-const BackgroundSource = require('../assets/OnbordingBackground.png');
 
 export default class SignUp extends React.Component {
   constructor() {
@@ -111,9 +105,9 @@ export default class SignUp extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: '#ff8c00' }} keyboardShouldPersistTaps="never" scrollEnabled={false}>
-        <Image style={styles.gradientBg} source={BackgroundSource} resizeMode="stretch" />
-        <View style={styles.container}>
+      <View>
+        <OnbordingBackground />
+        <ScrollView style={styles.scrollContainer} keyboardShouldPersistTaps="never" scrollEnabled={false}>
           <Input
             placeholder="First Name"
             onChangeText={value => this.setState({ fName: value })}
@@ -167,8 +161,8 @@ export default class SignUp extends React.Component {
               </Text>
             </View>
           </TouchableOpacity>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     );
   }
 }

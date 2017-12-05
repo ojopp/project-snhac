@@ -9,6 +9,9 @@ import {
   Image,
 } from 'react-native';
 
+import Input from '../components/Input';
+import OnbordingBackground from '../components/OnbordingBg';
+import Logo from '../components/Logo';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,17 +19,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 20,
   },
-  scrollCont: {
+  scrollContainer: {
     flex: 1,
-    backgroundColor: '#ff8c00',
+    position: 'absolute',
+    alignSelf: 'center',
   },
   logo: {
-    width: 175,
-    height: 175,
-  },
-  inputContainer: {
-    marginTop: 15,
-    alignItems: 'center',
+    width: 200,
+    height: 200,
   },
   input: {
     height: 36,
@@ -66,9 +66,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#00000000',
   },
   gradientBg: {
-    alignSelf: 'center',
-    flex: 1,
     width: '100%',
+    height: '100%',
   },
   innerContainer: {
     position: 'absolute',
@@ -86,8 +85,6 @@ const styles = StyleSheet.create({
 });
 
 const SNHACLogoSource = require('../assets/Logo-Large.png');
-
-const BackgroundSource = require('../assets/OnbordingBackground.png');
 
 export default class Login extends React.Component {
   constructor() {
@@ -117,30 +114,24 @@ export default class Login extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <ScrollView style={styles.scrollCont} keyboardShouldPersistTaps="never" scrollEnabled={false}>
-        <Image style={styles.gradientBg} source={BackgroundSource} resizeMode="stretch" />
-        <View style={styles.innerContainer}>
+      <View>
+        <OnbordingBackground />
+        <ScrollView style={styles.scrollContainer} keyboardShouldPersistTaps="never" scrollEnabled={false}>
           <View style={styles.container}>
-            <Image style={styles.logo} source={SNHACLogoSource} resizeMode="stretch" />
+            <Image source={SNHACLogoSource} style={styles.logo} resizeMode="stretch" />
           </View>
           <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              onChangeText={value => this.setState({ email: value })}
+            <Input
               placeholder="Email"
-              placeholderTextColor="#232A3090"
-              autoCapitalize="none"
+              onChangeText={value => this.setState({ email: value })}
+              value={this.state.email}
               keyboardType="email-address"
-              autoCorrect={false}
-              underlineColorAndroid="transparent"
             />
-            <TextInput
-              style={styles.input}
-              onChangeText={value => this.setState({ password: value })}
+            <Input
               placeholder="Password"
-              placeholderTextColor="#232A3090"
+              onChangeText={value => this.setState({ password: value })}
+              value={this.state.password}
               secureTextEntry
-              underlineColorAndroid="transparent"
             />
             <Text style={styles.errText}>
               {this.state.invalidEmail}
@@ -160,12 +151,12 @@ export default class Login extends React.Component {
           <TouchableOpacity onPress={() => navigate('ForgotPassword')}>
             <View style={styles.help}>
               <Text style={styles.helpText}>
-                Forgot your password?
+                Forgot password?
               </Text>
             </View>
           </TouchableOpacity>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     );
   }
 }
