@@ -1,20 +1,21 @@
 import React from 'react';
-import styled from 'styled-components/native';
-import {
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
 import { StackNavigator } from 'react-navigation';
-
-import ProfileScreen from './Profile';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import ProfileScreen from './Profile';
+import SettingsScreen from './Settings';
+
 
 const ProfileStack = StackNavigator({
   Home: {
     screen: ProfileScreen,
     navigationOptions: {
       title: 'Profile',
+    },
+  },
+  Settings: {
+    screen: SettingsScreen,
+    navigationOptions: {
+      title: 'Settings',
     },
   },
 }, {

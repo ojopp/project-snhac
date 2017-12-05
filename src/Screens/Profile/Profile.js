@@ -20,11 +20,12 @@ const styles = StyleSheet.create({
 
 
 export default class ProfileScreen extends React.Component {
-  static navigationOptions = ({ screenProps }) => ({
+  static navigationOptions = ({ screenProps, navigation }) => ({
     headerRight: (
       <TouchableOpacity
         style={styles.settings}
-        onPress={() => screenProps.signOut()}
+        // onPress={() => screenProps.signOut()}
+        onPress={() => navigation.navigate('Settings')}
       >
         <Icon name="settings" size={24} color='#232A30' />
       </TouchableOpacity>
