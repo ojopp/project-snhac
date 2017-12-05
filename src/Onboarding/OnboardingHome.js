@@ -19,44 +19,16 @@ const Button = styled.TouchableOpacity`
     border-top-color: #ff8c0060;
 `;
 
+const MainContainer = styled.View`
+  flex: 1;
+  justify-content: flex-end;
+  background-color: #ff8c00;
+`;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: '#ff8c00',
-  },
-  logo: {
-    flex: 1,
-    justifyContent: 'center',
-    alignSelf: 'center',
-    width: '80%',
-  },
-  buttonS: {
-    height: 75,
-    backgroundColor: '#232A3000',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderTopWidth: 1,
-    borderTopColor: '#ff8c0060',
-  },
-  buttonL: {
-    height: 75,
-    backgroundColor: '#00000000',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderTopWidth: 1,
-    borderTopColor: '#ff8c0060',
-  },
   buttonText: {
     color: '#ffffff',
     fontSize: 24,
-  },
-  gradientBg: {
-    alignSelf: 'center',
-    flex: 1,
-    width: '100%',
-    height: '100%',
   },
   innerContainer: {
     position: 'absolute',
@@ -73,7 +45,7 @@ export default class OnboardingHome extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
+      <MainContainer>
         <OnbordingBackground />
         <View style={styles.innerContainer} >
           <Logo width="80%" height="80%" flex={1} align="center" justify="center" />
@@ -88,7 +60,7 @@ export default class OnboardingHome extends React.Component {
             </Text>
           </Button>
         </View>
-      </View>
+      </MainContainer>
     );
   }
 }
