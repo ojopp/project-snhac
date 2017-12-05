@@ -3,8 +3,9 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
 } from 'react-native';
+
+import OnbordingBackground from '../components/OnbordingBg';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,8 +27,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const BackgroundSource = require('../assets/OnbordingBackground.png');
-
 export default class HowToAthleteID extends React.Component {
   static navigationOptions = {
   }
@@ -35,7 +34,7 @@ export default class HowToAthleteID extends React.Component {
   render() {
     return (
       <View>
-        <Image stylr={styles.gradientBg} source={BackgroundSource} resizeMode="stretch" />
+        <OnbordingBackground />
         <View style={styles.container}>
           <Text style={styles.txt}>
             1. Go to http://www.thepowerof10.info
