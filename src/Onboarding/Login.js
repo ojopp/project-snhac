@@ -84,8 +84,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const SNHACLogoSource = require('../assets/Logo-Large.png');
-
 export default class Login extends React.Component {
   constructor() {
     super();
@@ -118,7 +116,7 @@ export default class Login extends React.Component {
         <OnbordingBackground />
         <ScrollView style={styles.scrollContainer} keyboardShouldPersistTaps="never" scrollEnabled={false}>
           <View style={styles.container}>
-            <Image source={SNHACLogoSource} style={styles.logo} resizeMode="stretch" />
+            <Logo width="200" height="200" />
           </View>
           <View style={styles.inputContainer}>
             <Input

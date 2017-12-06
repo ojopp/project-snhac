@@ -48,7 +48,7 @@ export default class OnboardingHome extends React.Component {
       <MainContainer>
         <OnbordingBackground />
         <View style={styles.innerContainer} >
-          <Logo width="80%" height="80%" flex={1} align="center" justify="center" />
+          <Logo width="80%" height="80%" flex={1} />
           <Button onPress={() => navigate('Login')}>
             <Text style={styles.buttonText} >
               Log in
