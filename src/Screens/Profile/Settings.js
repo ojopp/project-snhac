@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const Cell = styled.View`
   flex-direction: row;
   align-items: center;
-  height: 38px;
+  height: 40px;
   background-color: #ffffff;
   border-bottom-width: 1px;
   border-color: #232A3010;
@@ -30,7 +30,7 @@ export default class SettingsScreen extends Component {
           onPress={() => this.props.screenProps.signOut()}
         >
           <Cell>
-            <Icon name="exit-to-app" size={24} color="#ff8c00" />
+            <Icon name="exit-to-app" size={30} color="#ff8c00" />
             <Text> Logout </Text>
           </Cell>
         </TouchableHighlight>
