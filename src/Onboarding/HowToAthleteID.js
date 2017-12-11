@@ -4,8 +4,19 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
+import styled from 'styled-components/native';
 
 import OnbordingBackground from '../components/OnbordingBg';
+import HowtoAthleteIDSource from '../assets/HowToAthleteID.png';
+
+const HowTo = styled.Image`
+  width: 90%;
+  height: 60%;
+`;
+
+const Space = styled.View`
+  flex: 2;
+`;
 
 const styles = StyleSheet.create({
   container: {
@@ -33,24 +44,11 @@ export default class HowToAthleteID extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <OnbordingBackground />
         <View style={styles.container}>
-          <Text style={styles.txt}>
-            1. Go to http://www.thepowerof10.info
-          </Text>
-          <Text style={styles.txt}>
-            2. Type in your first name and last name
-          </Text>
-          <Text style={styles.txt}>
-            3. Type 'SNHAC' in the club field
-          </Text>
-          <Text style={styles.txt}>
-            4. Find yourself and click 'show profile'
-          </Text>
-          <Text style={styles.txt}>
-            5. The last 6 digits in the website URL is your athlete profile
-          </Text>
+          <HowTo source={HowtoAthleteIDSource} resizeMode="contain" />
+          <Space />
         </View>
       </View>
     );

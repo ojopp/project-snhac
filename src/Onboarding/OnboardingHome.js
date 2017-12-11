@@ -19,9 +19,13 @@ const Button = styled.TouchableOpacity`
     border-top-color: #ff8c0060;
 `;
 
+const StickBottom = styled.View`
+  justify-content: flex-end;
+  flex-direction: column;
+`;
+
 const MainContainer = styled.View`
   flex: 1;
-  justify-content: flex-end;
   background-color: #ff8c00;
 `;
 
@@ -48,17 +52,21 @@ export default class OnboardingHome extends React.Component {
       <MainContainer>
         <OnbordingBackground />
         <View style={styles.innerContainer} >
-          <Logo width="80%" height="80%" flex={1} />
-          <Button onPress={() => navigate('Login')}>
-            <Text style={styles.buttonText} >
-              Log in
-            </Text>
-          </Button>
-          <Button onPress={() => navigate('SignUp')}>
-            <Text style={styles.buttonText}>
-              Sign up
-            </Text>
-          </Button>
+          <View style={{ flex: 1, justifyContent: 'center' }} >
+            <Logo width="80%" height="80%" />
+          </View>
+          <StickBottom>
+            <Button onPress={() => navigate('Login')}>
+              <Text style={styles.buttonText} >
+                Log in
+              </Text>
+            </Button>
+            <Button onPress={() => navigate('SignUp')}>
+              <Text style={styles.buttonText}>
+                Sign up
+              </Text>
+            </Button>
+          </StickBottom>
         </View>
       </MainContainer>
     );

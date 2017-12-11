@@ -40,7 +40,7 @@ export const OnboardingRouter = StackNavigator({
   HowToAthleteID: {
     screen: HowToAthleteID,
     navigationOptions: {
-      title: 'AthleteID help',
+      title: 'Athlete ID help',
     },
   },
 }, {
