@@ -1,9 +1,4 @@
 import React from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-} from 'react-native';
 import styled from 'styled-components/native';
 
 import OnbordingBackground from '../components/OnbordingBg';
@@ -15,26 +10,20 @@ const InnerContainer = styled.View`
   flex: 1;
 `;
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    paddingTop: 20,
-  },
-  gradientBg: {
-    width: '100%',
-    height: '100%',
-  },
-  txt: {
-    color: '#232A30',
-    backgroundColor: 'transparent',
-  },
-  spacing: {
-    height: 70,
-  },
-});
+const Container = styled.View`
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding-top: 20px;
+`;
+
+const MainContainer = styled.View`
+`;
+
+const Spacer = styled.View`
+  height: 70px;
+`;
 
 export default class ForgotPassword extends React.Component {
   constructor() {
@@ -46,9 +35,9 @@ export default class ForgotPassword extends React.Component {
 
   render() {
     return (
-      <View>
+      <MainContainer>
         <OnbordingBackground />
-        <View style={styles.container}>
+        <Container>
           <Logo width="200" height="200" />
           <InnerContainer>
             <Input
@@ -57,11 +46,11 @@ export default class ForgotPassword extends React.Component {
               value={this.state.email}
               keyboardType="email-address"
             />
-            <View style={styles.spacing} />
+            <Spacer />
             <Button onPress={() => this.props.screenProps.forgotPassword(this.state.email)} text="Submit" />
           </InnerContainer>
-        </View>
-      </View>
+        </Container>
+      </MainContainer>
     );
   }
 }

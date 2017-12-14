@@ -71,7 +71,7 @@ export default class App extends React.Component {
     console.warn(user);
     if (user) {
       this.setState({ loggedIn: true });
-      let User = firebaseApp.auth().currentUser;
+      const User = firebaseApp.auth().currentUser;
       const userRef = firebaseApp.database().ref(`project-snhac/Users/${User.uid}`);
       userRef.update({
         Users: User.uid,
@@ -95,12 +95,10 @@ export default class App extends React.Component {
   }
 
   forgotPassword = async (email) => {
-    firebaseApp.auth().sendPasswordResetEmail(email).then(function() {
+    firebaseApp.auth().sendPasswordResetEmail(email).then(() => {
       // Email sent.
-      console.log('Email sent')
-    }).catch(function(error) {
+    }).catch((error) => {
       // An error happened.
-      console.log('Error')
     });
   }
 
@@ -116,7 +114,8 @@ export default class App extends React.Component {
                 login: this.login,
                 signUp: this.signUp,
                 forgotPassword: this.forgotPassword,
-              }} />
+              }}
+              />
           }
         </MainContainer>
       );

@@ -1,74 +1,39 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import styled from 'styled-components/native';
 
 import OnbordingBackground from '../components/OnbordingBg';
 import Input from '../components/Input';
+import Button from '../components/Button';
 
-const styles = StyleSheet.create({
-  scrollContainer: {
-    flex: 1,
-    position: 'absolute',
-    alignSelf: 'center',
-  },
-  inputContainer: {
-    marginTop: 15,
-  },
-  input: {
-    height: 36,
-    marginTop: 10,
-    width: 300,
-    paddingLeft: 12,
-    backgroundColor: '#232A3000',
-    borderRadius: 18,
-    borderColor: '#232A30',
-    borderWidth: 2,
-    color: '#232A30ee',
-    fontSize: 16,
-  },
-  button: {
-    height: 36,
-    width: 100,
-    padding: 4,
-    alignSelf: 'center',
-    backgroundColor: '#232A30dd',
-    borderRadius: 18,
-    alignItems: 'center',
-    shadowColor: '#232A30',
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-  },
-  buttonText: {
-    flex: 1,
-    color: '#ffffff',
-    fontSize: 16,
-    paddingTop: 4,
-  },
-  errText: {
-    color: '#ff0000',
-    backgroundColor: '#00000000',
-  },
-  gradientBg: {
-    flex: 1,
-    width: '100%',
-  },
-  helpText: {
-    alignSelf: 'center',
-    color: '#232A30',
-    backgroundColor: '#ffffff00',
-  },
-  help: {
-    paddingTop: 20,
-  },
-});
+const MainContainer = styled.View`
+`;
+
+const InnerContainer = styled.View`
+  flex: 1;
+  position: absolute;
+  align-self: center;
+`;
+
+const AthleteID = styled.TouchableOpacity`
+`;
+
+const HelpContainer = styled.View`
+  padding-top: 20;
+`;
+
+const HelpText = styled.Text`
+  align-self: center;
+  color: #232A30;
+  background-color: #ffffff00;
+`;
+
+const ErrText = styled.Text`
+  background-color: transparent;
+  color: #ffffff;
+  font-size: 14;
+  align-self: center;
+  height: 20;
+`;
 
 export default class SignUp extends React.Component {
   constructor() {
@@ -81,17 +46,29 @@ export default class SignUp extends React.Component {
       password: '',
       confirmPassword: '',
       err: '',
-      passwordNotMatch: '',
     };
   }
 
   onPressSubmit() {
     if (this.state.fName !== '') {
       if (this.state.lName !== '') {
-        if (this.state.password === this.state.confirmPassword) {
-          this.props.screenProps.signUp(this.state.email, this.state.password, this.state.fName, this.state.lName, this.state.p10ID);
+        this.setState({ err: '' });
+        if (this.state.p10ID !== '') {
+          if (this.state.email !== '') {
+            if (this.state.password !== '') {
+              if (this.state.password === this.state.confirmPassword) {
+                this.props.screenProps.signUp(this.state.email, this.state.password, this.state.fName, this.state.lName, this.state.p10ID);
+              } else {
+                this.setState({ err: 'Passwords do not match' });
+              }
+            } else {
+              this.setState({ err: 'Please enter a Password' });
+            }
+          } else {
+            this.setState({ err: 'Please enter your Email' });
+          }
         } else {
-          this.setState({ passwordNotMatch: '* Passwords do not match *' });
+          this.setState({ err: 'Please enter your Athlete ID' });
         }
       } else {
         this.setState({ err: 'Please enter your Last name' });
@@ -105,9 +82,9 @@ export default class SignUp extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View>
+      <MainContainer>
         <OnbordingBackground />
-        <ScrollView style={styles.scrollContainer} keyboardShouldPersistTaps="never" scrollEnabled={false}>
+        <InnerContainer keyboardShouldPersistTaps="never" scrollEnabled={false}>
           <Input
             placeholder="First Name"
             onChangeText={value => this.setState({ fName: value })}
@@ -143,26 +120,19 @@ export default class SignUp extends React.Component {
             value={this.state.confirmPassword}
             secureTextEntry
           />
-          <Text style={styles.errText}>
+          <ErrText>
             {this.state.err}
-          </Text>
-          <Text style={styles.errText}>
-            {this.state.passwordNotMatch}
-          </Text>
-          <TouchableOpacity style={styles.button} onPress={() => this.onPressSubmit()}>
-            <Text style={styles.buttonText}>
-                Sign Up
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigate('HowToAthleteID')}>
-            <View style={styles.help}>
-              <Text style={styles.helpText}>
+          </ErrText>
+          <Button onPress={() => this.onPressSubmit()} text="SignUp" />
+          <AthleteID onPress={() => navigate('HowToAthleteID')}>
+            <HelpContainer>
+              <HelpText>
                 How to find your Athlete ID
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
+              </HelpText>
+            </HelpContainer>
+          </AthleteID>
+        </InnerContainer>
+      </MainContainer>
     );
   }
 }

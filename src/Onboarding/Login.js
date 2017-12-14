@@ -1,88 +1,40 @@
 import React from 'react';
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-} from 'react-native';
+import styled from 'styled-components/native';
 
 import Input from '../components/Input';
 import OnbordingBackground from '../components/OnbordingBg';
 import Logo from '../components/Logo';
+import Button from '../components/Button';
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 20,
-  },
-  scrollContainer: {
-    flex: 1,
-    position: 'absolute',
-    alignSelf: 'center',
-  },
-  logo: {
-    width: 200,
-    height: 200,
-  },
-  input: {
-    height: 36,
-    marginTop: 10,
-    width: 300,
-    paddingLeft: 12,
-    backgroundColor: '#232A3000',
-    borderRadius: 18,
-    borderColor: '#232A30',
-    borderWidth: 2,
-    color: '#232A30',
-    fontSize: 16,
-  },
-  button: {
-    height: 36,
-    width: 100,
-    padding: 4,
-    alignSelf: 'center',
-    backgroundColor: '#232A30dd',
-    borderRadius: 18,
-    alignItems: 'center',
-    shadowColor: '#232A30',
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-  },
-  buttonText: {
-    flex: 1,
-    color: '#ffffff',
-    fontSize: 16,
-    paddingTop: 4,
-  },
-  errText: {
-    color: '#ff0000',
-    backgroundColor: '#00000000',
-  },
-  gradientBg: {
-    width: '100%',
-    height: '100%',
-  },
-  innerContainer: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-  },
-  helpText: {
-    color: '#232A30',
-    backgroundColor: '#ffffff00',
-  },
-  help: {
-    paddingTop: 20,
-    alignSelf: 'center',
-  },
-});
+const MainContainer = styled.View`
+  align-items: center;
+`;
+const ScrollContainer = styled.View`
+  flex: 1;
+  position: absolute;
+`;
+
+const Spacer = styled.View`
+padding-top: 20px;
+`;
+
+const ErrText = styled.Text`
+background-color: transparent;
+color: #ffffff;
+font-size: 14;
+align-self: center;
+height: 26px;
+`;
+
+const ForgotPassword = styled.TouchableOpacity`
+  align-items: center;
+  padding-top: 20px;
+`;
+
+const ForgotPasswordText = styled.Text`
+  color: #232A30;
+  background-color: #ffffff00;
+`;
 
 export default class Login extends React.Component {
   constructor() {
@@ -90,8 +42,7 @@ export default class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      incorrectPassword: '',
-      invalidEmail: '',
+      err: '',
     };
   }
 
@@ -112,49 +63,37 @@ export default class Login extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View>
+      <MainContainer>
         <OnbordingBackground />
-        <ScrollView style={styles.scrollContainer} keyboardShouldPersistTaps="never" scrollEnabled={false}>
-          <View style={styles.container}>
-            <Logo width="200" height="200" />
-          </View>
-          <View style={styles.inputContainer}>
-            <Input
-              placeholder="Email"
-              onChangeText={value => this.setState({ email: value })}
-              value={this.state.email}
-              keyboardType="email-address"
-            />
-            <Input
-              placeholder="Password"
-              onChangeText={value => this.setState({ password: value })}
-              value={this.state.password}
-              secureTextEntry
-            />
-            <Text style={styles.errText}>
-              {this.state.invalidEmail}
-            </Text>
-            <Text style={styles.errText}>
-              {this.state.incorrectPassword}
-            </Text>
-          </View>
-          <TouchableOpacity
-            style={styles.button}
+        <ScrollContainer keyboardShouldPersistTaps="never" scrollEnabled={false}>
+          <Spacer />
+          <Logo width="200" height="200" />
+          <Input
+            placeholder="Email"
+            onChangeText={value => this.setState({ email: value })}
+            value={this.state.email}
+            keyboardType="email-address"
+          />
+          <Input
+            placeholder="Password"
+            onChangeText={value => this.setState({ password: value })}
+            value={this.state.password}
+            secureTextEntry
+          />
+          <ErrText>
+            {this.state.err}
+          </ErrText>
+          <Button
             onPress={this.onPressLogin.bind(this)}
-          >
-            <Text style={styles.buttonText}>
-                Log in
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigate('ForgotPassword')}>
-            <View style={styles.help}>
-              <Text style={styles.helpText}>
-                Forgot password?
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
+            text="Log in"
+          />
+          <ForgotPassword onPress={() => navigate('ForgotPassword')}>
+            <ForgotPasswordText>
+              Forgot password?
+            </ForgotPasswordText>
+          </ForgotPassword>
+        </ScrollContainer>
+      </MainContainer>
     );
   }
 }
