@@ -4,13 +4,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import ProfileScreen from './Profile';
 import SettingsScreen from './Settings';
 
-
 const ProfileStack = StackNavigator({
   Home: {
     screen: ProfileScreen,
-    navigationOptions: {
-      title: 'Profile',
-    },
   },
   Settings: {
     screen: SettingsScreen,
@@ -37,7 +33,7 @@ export default class ProfileRouter extends React.Component {
 
   render() {
     return (
-      <ProfileStack screenProps={this.props.screenProps} />
+      <ProfileStack screenProps={{ ...this.props.screenProps, name: 'Oscar Jopp' }} />
     );
   }
 }

@@ -54,7 +54,8 @@ export default class App extends React.Component {
         'power-of-10-ID': P10ID,
       });
       try {
-        AsyncStorage.setItem('@userID:key', User.uid);
+        AsyncStorage.setItem('userID', User.uid);
+        //AsyncStorage.setItem('displayName', `${fName} ${lName}`);
       } catch (error) {
         // Error saving data
         alert('error saving username');
@@ -72,12 +73,12 @@ export default class App extends React.Component {
     if (user) {
       this.setState({ loggedIn: true });
       const User = firebaseApp.auth().currentUser;
-      const userRef = firebaseApp.database().ref(`project-snhac/Users/${User.uid}`);
+      const userRef = firebaseApp.database().ref();
       userRef.update({
         Users: User.uid,
       });
       try {
-        AsyncStorage.setItem('@userID:key', User.uid);
+        AsyncStorage.setItem('userID', User.uid);
       } catch (error) {
         // Error saving data
         alert('error saving username');
