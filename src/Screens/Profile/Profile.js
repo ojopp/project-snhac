@@ -62,11 +62,12 @@ const TabNavButton = styled.TouchableOpacity``;
 const PerformanceTable = styled.FlatList`
   margin-horizontal: 12px;
   margin-top: 18px;
+  flex: 1;
 `;
 
 const TableHeader = styled.View`
-  flex: 1;
   height: 25px;
+  width: 100%;
   flex-direction: row;
   background-color: #ff8c00;
   align-items: center;
@@ -75,8 +76,8 @@ const TableHeader = styled.View`
 `;
 
 const TableRow = styled.View`
-  flex: 1;
   height: 25px;
+  width: 100%;
   justify-content: center;
   padding-left: 4px;
   flex-direction: row;
@@ -152,6 +153,8 @@ export default class ProfileScreen extends React.Component {
           </RightContainer>
         </SubContainer>
         <PerformanceTable
+          keyExtractor={item => item.event}
+          stickyHeaderIndices={[0]}
           ListHeaderComponent={
             <TableHeader>
               <HeaderText> Event </HeaderText>
@@ -162,7 +165,7 @@ export default class ProfileScreen extends React.Component {
             }
           data={[
             { event: '60m', pb: '7.73', sb: '7.73', target: '7.50' },
-            { event: '100m', pb: '11.94', sb: '12.04', target: '11.75' },
+            { event: '100m', pb: '11.94', sb: '', target: '11.75' },
             { event: '400m', pb: '58.0', sb: '', target: '57.00' },
             { event: '1000m', pb: '3:13.16', sb: '3:13.16', target: '3:10.00' },
             { event: '1500m', pb: '5:16.70', sb: '', target: '5:00.00' },
@@ -171,6 +174,12 @@ export default class ProfileScreen extends React.Component {
             { event: 'HJ', pb: '1.88', sb: '1.80', target: '1.90' },
             { event: 'PV', pb: '4.22', sb: '4.22', target: '4.40' },
             { event: 'LJ', pb: '6.17', sb: '6.04', target: '6.30' },
+            { event: 'SP6K', pb: '10.08', sb: '9.85', target: '11.00' },
+            { event: 'DT1.5K', pb: '32.25', sb: '', target: '37.50' },
+            { event: 'JT800', pb: '40.63', sb: '', target: '45.00' },
+            { event: 'HeplU20M', pb: '4346', sb: '4346', target: '4450' },
+            { event: 'DecU20M', pb: '5467', sb: '', target: '6000' },
+
           ]}
           renderItem={data => <TableRowItem data={data} />}
         />
