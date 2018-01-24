@@ -20,8 +20,8 @@ export default class Logo extends Component {
   };
 
   static defaultProps = {
-    width: 108,
-    height: 108,
+    width: '108',
+    height: '108',
     align: 'center',
     justify: 'center',
   };
