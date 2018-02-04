@@ -7,9 +7,12 @@ const DisplayImage = styled.Image`
   height: ${props => props.height};
   align-self: ${props => props.align};
   justify-content: ${props => props.justify};
+  border-radius: 54px;
+  border-color: #232a3055;
+  border-width: 2px;
 `;
 
-const PictureSource = require('../assets/Logo-Large.png');
+const PictureSource = require('../assets/OscarJopp.jpg');
 
 export default class Logo extends Component {
   static propTypes = {
@@ -28,16 +31,11 @@ export default class Logo extends Component {
 
   constructor() {
     super();
-    this.state = {
-
-    };
+    this.state = {};
   }
   render() {
     const {
-      width,
-      height,
-      align,
-      justify
+      width, height, align, justify,
     } = this.props;
 
     return (
