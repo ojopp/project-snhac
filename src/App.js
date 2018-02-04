@@ -2,12 +2,11 @@
 
 import React from 'react';
 import styled from 'styled-components/native';
-import {
-  StatusBar,
-  AsyncStorage,
-} from 'react-native';
-import firebaseApp from './firebase/firebaseConfig';
+import { StatusBar, AsyncStorage } from 'react-native';
+
 import { OnboardingRouter, MainRouter } from './router';
+import firebaseApp from './firebase/firebaseConfig';
+import { signUp, signOut, login, forgotPassword } from './firebase/auth/api';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -21,18 +20,13 @@ export default class App extends React.Component {
       loggedIn: false,
       render: false,
     };
-
-    this.login = this.login.bind(this);
-    this.signUp = this.signUp.bind(this);
-    this.signOut = this.signOut.bind(this);
   }
 
   componentWillMount() {
     firebaseApp.auth().onAuthStateChanged(async (user) => {
       if (user) {
         // User is signed in.
-        await AsyncStorage.setItem('@userID:key', user.uid);
-        // Error saving data
+        await AsyncStorage.setItem('uid', user.uid);
         this.setState({ loggedIn: true });
       } else {
         // No user is signed in.
@@ -42,82 +36,39 @@ export default class App extends React.Component {
   }
 
   signUp = async (email, password, fName, lName, P10ID) => {
-    const user = await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
-
-    if (user) {
+    await signUp(email, password, fName, lName, P10ID, () => {
       this.setState({ loggedIn: true });
-      const User = firebaseApp.auth().currentUser;
-      const userRef = firebaseApp.database().ref(`athletes/'${User.uid}`);
-      userRef.update({
-        'first-name': fName,
-        'last-name': lName,
-        'power-of-10-ID': P10ID,
-      });
-      try {
-        AsyncStorage.setItem('userID', User.uid);
-        //AsyncStorage.setItem('displayName', `${fName} ${lName}`);
-      } catch (error) {
-        // Error saving data
-        alert('error saving username');
-        resolve(false);
-      }
-      resolve(true);
-    }
-  }
+    });
+  };
 
   login = async (email, password) => {
-    const user = await firebaseApp.auth().signInWithEmailAndPassword(email, password)
-      .catch((error) => {
-      });
-    console.warn(user);
-    if (user) {
+    await login(email, password, () => {
       this.setState({ loggedIn: true });
-      const User = firebaseApp.auth().currentUser;
-      const userRef = firebaseApp.database().ref();
-      userRef.update({
-        Users: User.uid,
-      });
-      try {
-        AsyncStorage.setItem('userID', User.uid);
-      } catch (error) {
-        // Error saving data
-        alert('error saving username');
-        resolve(false);
-      }
-      resolve(true);
-    }
-  }
+    });
+  };
 
   signOut = async () => {
-    firebaseApp.auth().signOut()
-      .then(() => {
-        this.setState({ loggedIn: false });
-      });
-  }
-
-  forgotPassword = async (email) => {
-    firebaseApp.auth().sendPasswordResetEmail(email).then(() => {
-      // Email sent.
-    }).catch((error) => {
-      // An error happened.
+    await signOut(() => {
+      this.setState({ loggedIn: false });
     });
-  }
+  };
 
   render() {
     if (this.state.render) {
       return (
         <MainContainer>
           <StatusBar barStyle="light-content" setBackgroundColor="#000000" />
-          {
-            this.state.loggedIn ?
-              <MainRouter screenProps={{ signOut: this.signOut }} /> :
-              <OnboardingRouter screenProps={{
+          {this.state.loggedIn ? (
+            <MainRouter screenProps={{ signOut: this.signOut }} />
+          ) : (
+            <OnboardingRouter
+              screenProps={{
                 login: this.login,
                 signUp: this.signUp,
-                forgotPassword: this.forgotPassword,
+                forgotPassword,
               }}
-              />
-          }
+            />
+          )}
         </MainContainer>
       );
     }
