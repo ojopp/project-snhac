@@ -44,7 +44,7 @@ export default class EventsScreen extends React.Component {
       {
         title: 'Loading',
         data: [
-          { eventName: 'Ensure valid internet connection' },
+          { eventName: 'Ensure vaild internet connection' },
           { attendees: [{ id: '', attendence: '' }] },
         ],
       },
@@ -132,8 +132,8 @@ export default class EventsScreen extends React.Component {
               underlayColor="#232A3030"
               onPress={() =>
                 (localCoachBool
-                  ? navigate('EventDetailAthlete', { item })
-                  : navigate('EventDetailManager', { item }))
+                  ? navigate('EventDetailManager', { item })
+                  : navigate('EventDetailAthlete', { item }))
               }
             >
               <View>

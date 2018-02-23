@@ -11,81 +11,86 @@ import Events from './Screens/Events/EventsRouter';
 import Training from './Screens/Training/TrainingRouter';
 import Profile from './Screens/Profile/ProfileRouter';
 
-export const OnboardingRouter = StackNavigator({
-  OnboardingHome: {
-    screen: OnboardingHome,
+export const OnboardingRouter = StackNavigator(
+  {
+    OnboardingHome: {
+      screen: OnboardingHome,
+      navigationOptions: {
+        title: 'Welcome',
+        headerMode: 'none',
+      },
+    },
+    SignUp: {
+      screen: SignUp,
+      navigationOptions: {
+        title: 'Sign Up',
+      },
+    },
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        title: 'Login',
+      },
+    },
+    ForgotPassword: {
+      screen: ForgotPassword,
+      navigationOptions: {
+        title: 'Forgot Passowrd',
+      },
+    },
+    HowToAthleteID: {
+      screen: HowToAthleteID,
+      navigationOptions: {
+        title: 'Athlete ID help',
+      },
+    },
+  },
+  {
     navigationOptions: {
-      title: 'Welcome',
-      headerMode: 'none',
+      headerBackTitle: 'Back',
+      headerTintColor: '#ffffff',
+      headerStyle: {
+        backgroundColor: '#000000',
+        height: 30,
+      },
     },
   },
-  SignUp: {
-    screen: SignUp,
-    navigationOptions: {
-      title: 'Sign Up',
-    },
-  },
-  Login: {
-    screen: Login,
-    navigationOptions: {
-      title: 'Login',
-    },
-  },
-  ForgotPassword: {
-    screen: ForgotPassword,
-    navigationOptions: {
-      title: 'Forgot Passowrd',
-    },
-  },
-  HowToAthleteID: {
-    screen: HowToAthleteID,
-    navigationOptions: {
-      title: 'Athlete ID help',
-    },
-  },
-}, {
-  navigationOptions: {
-    headerBackTitle: 'Back',
-    headerTintColor: '#ffffff',
-    headerStyle: {
-      backgroundColor: '#000000',
-      height: 30,
-    },
-  },
-});
+);
 
-export const MainRouter = TabNavigator({
-  Home2: {
-    screen: Home,
-    navigationOptions: {
-      title: 'Home',
+export const MainRouter = TabNavigator(
+  {
+    Home2: {
+      screen: Home,
+      navigationOptions: {
+        title: 'Home',
+      },
+    },
+    Events: {
+      screen: Events,
+      navigationOptions: {
+        title: 'Events',
+      },
+    },
+    Training: {
+      screen: Training,
+      navigationOptions: {
+        title: 'Training',
+      },
+    },
+    Profile: {
+      screen: Profile,
+      navigationOptions: {
+        title: 'Profile',
+      },
     },
   },
-  Events: {
-    screen: Events,
-    navigationOptions: {
-      title: 'Events',
+  {
+    tabBarOptions: {
+      activeTintColor: '#ff8c00',
+      inactiveTintColor: '#232A3090',
+      style: {
+        backgroundColor: '#ffffff',
+      },
     },
   },
-  Training: {
-    screen: Training,
-    navigationOptions: {
-      title: 'Training',
-    },
-  },
-  Profile: {
-    screen: Profile,
-    navigationOptions: {
-      title: 'Profile',
-    },
-  },
-}, {
-  tabBarOptions: {
-    activeTintColor: '#ff8c00',
-    inactiveTintColor: '#232A3090',
-    style: {
-      backgroundColor: '#ffffff',
-    },
-  },
-});
-
+);

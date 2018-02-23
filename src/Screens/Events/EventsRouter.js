@@ -1,14 +1,16 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import EventsScreen from './Events';
+import AthleteEventsScreen from './Events';
+import ManagerEventsScreen from './ManagerEvents';
 import EventDetailAthleteScreen from './EventDetailAthlete';
 import EventDetailManagerScreen from './EventDetailManager';
+import CreateEventScreen from './CreateEvent';
 
 const EventStack = StackNavigator(
   {
-    Home: {
-      screen: EventsScreen,
+    AthleteHome: {
+      screen: AthleteEventsScreen,
       navigationOptions: {
         title: 'Events',
       },
@@ -19,10 +21,22 @@ const EventStack = StackNavigator(
         title: 'Event Details',
       },
     },
+    ManagerHome: {
+      screen: ManagerEventsScreen,
+      navigationOptions: {
+        title: 'Events',
+      },
+    },
     EventDetailManager: {
       screen: EventDetailManagerScreen,
       navigationOptions: {
         title: 'Events Details',
+      },
+    },
+    CreateEvent: {
+      screen: CreateEventScreen,
+      navigationOptions: {
+        title: 'Create New Event',
       },
     },
   },

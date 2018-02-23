@@ -53,13 +53,19 @@ export default class App extends React.Component {
     });
   };
 
+  getCoachStatus = async () => {
+    const coachStatus = await AsyncStorage.getItem('coachBool');
+    console.warn(`1 ${coachStatus}`);
+    return coachStatus;
+  };
+
   render() {
     if (this.state.render) {
       return (
         <MainContainer>
           <StatusBar barStyle="light-content" setBackgroundColor="#000000" />
           {this.state.loggedIn ? (
-            <MainRouter screenProps={{ signOut: this.signOut }} />
+            <MainRouter screenProps={{ signOut: this.signOut, coachBool: this.getCoachStatus() }} />
           ) : (
             <OnboardingRouter
               screenProps={{

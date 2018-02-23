@@ -2,6 +2,8 @@ import React from 'react';
 import { Animated } from 'react-native';
 import styled from 'styled-components/native';
 import PropTypes from 'prop-types';
+import firebaseApp from '../../firebase/firebaseConfig';
+import { addAttendee } from '../../firebase/events/api';
 
 const MainContainer = styled.View`
   background-color: #ffffff;
@@ -110,10 +112,10 @@ export default class EventDetailAthleteScreen extends React.Component {
   state = {
     slideUp: new Animated.Value(-10),
     slideMargin: new Animated.Value(0),
-    unselectedOpacity: new Animated.Value(1),
+    notGoingOpacity: new Animated.Value(1),
   };
 
-  slide = () => {
+  canGo = () => {
     Animated.parallel([
       Animated.timing(this.state.slideUp, {
         toValue: 60,
@@ -123,7 +125,24 @@ export default class EventDetailAthleteScreen extends React.Component {
         toValue: 70,
         duration: 100,
       }),
-      Animated.timing(this.state.unselectedOpacity, {
+      Animated.timing(this.state.notGoingOpacity, {
+        toValue: 0.6,
+        duration: 100,
+      }),
+    ]).start();
+  };
+
+  notGoing = () => {
+    Animated.parallel([
+      Animated.timing(this.state.slideUp, {
+        toValue: -10,
+        duration: 100,
+      }),
+      Animated.timing(this.state.slideMargin, {
+        toValue: 0,
+        duration: 100,
+      }),
+      Animated.timing(this.state.notGoingOpacity, {
         toValue: 0.6,
         duration: 100,
       }),
@@ -140,33 +159,12 @@ export default class EventDetailAthleteScreen extends React.Component {
     return (
       <MainContainer>
         <Header>
-          <EventTitle> Youth Development League </EventTitle>
+          <EventTitle> {this.props.navigation.state.params.item.eventName} </EventTitle>
           <EventSub> Saturday 28th April </EventSub>
-          <EventSub> Stevenage </EventSub>
+          <EventSub> {this.props.navigation.state.params.item.location} </EventSub>
         </Header>
         <AnimatedNotesContainer style={{ marginBottom: this.state.slideMargin }}>
-          <EventNotes>
-            The SAL is open to all athletes u17 upwards including veterans. We will need an A and B
-            string athlete for each event and there are also non scoring opportunities available for
-            every event. You will also need to be a first claim or higher claim member to compete in
-            the match.
-          </EventNotes>
-          <EventNotes>
-            For the longer distance races the distances vary at each match. At this match there will
-            be a 3000 for Women and a 5000m for Men. There will be a 2000m Steeple chase for men and
-            a 2000m Steeple Chase for Women.
-          </EventNotes>
-          <EventNotes>
-            After 2 matches we are 2nd in the league by half a point. We will need to field a full
-            team in order to keep this position and hopefully get promoted at the end of the season!
-            So it would be great to see as many of you as possible..
-          </EventNotes>
-          <EventNotes>
-            Please let your team manager know as soon as possible if you are available to compete .
-            It is essential that you let us know even if you are unable to compete. We will need to
-            have received all replies by Wednesday 14th April to so we are able to write the team
-            sheets in time.
-          </EventNotes>
+          <EventNotes>{this.props.navigation.state.params.item.information}</EventNotes>
         </AnimatedNotesContainer>
         <BottomContainer>
           <AnimatedBusContainer style={{ bottom: this.state.slideUp }}>
@@ -179,11 +177,18 @@ export default class EventDetailAthleteScreen extends React.Component {
             </EventSub>
           </AnimatedBusContainer>
           <AttendanceContainer>
-            <AttendanceButton style={{ backgroundColor: '#00C853' }} onPress={() => this.slide()}>
-              <AttendanceText> Can go </AttendanceText>
-            </AttendanceButton>
             <AnimatedAttendanceButton
-              style={{ backgroundColor: '#ff0000', opacity: this.state.unselectedOpacity }}
+              style={{ backgroundColor: '#00C853', opacity: 1 }}
+              onPress={() => {
+                addAttendee(this.props.navigation.state.params.item.id, this.props.navigation);
+                this.canGo();
+              }}
+            >
+              <AttendanceText> Can go </AttendanceText>
+            </AnimatedAttendanceButton>
+            <AnimatedAttendanceButton
+              style={{ backgroundColor: '#ff0000', opacity: this.state.notGoingOpacity }}
+              onPress={() => this.notGoing()}
             >
               <AttendanceText> Can't go </AttendanceText>
             </AnimatedAttendanceButton>

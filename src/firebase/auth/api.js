@@ -7,7 +7,7 @@ const signUp = async (email, password, fName, lName, P10ID, callback) => {
   if (user) {
     callback();
     const User = firebaseApp.auth().currentUser;
-    const userRef = firebaseApp.database().ref(`athletes/'${User.uid}`);
+    const userRef = firebaseApp.database().ref(`athletes/${User.uid}`);
     userRef.update({
       'first-name': fName,
       'last-name': lName,
@@ -26,10 +26,18 @@ const signUp = async (email, password, fName, lName, P10ID, callback) => {
     try {
       await AsyncStorage.setItem('uid', User.uid);
       await AsyncStorage.setItem('displayName', `${fName} ${lName}`);
+      await AsyncStorage.setItem('coachBool', 'false');
     } catch (error) {
       // Error saving data
     }
   }
+};
+
+const getCoach = (uid) => {
+  const coachRef = firebaseApp.database().ref(`athletes/${uid}/coach`);
+  coachRef.on('value', (coach) => {
+    AsyncStorage.setItem('coachBool', coach.val().toString());
+  });
 };
 
 const login = async (email, password, callback) => {
@@ -49,6 +57,7 @@ const login = async (email, password, callback) => {
 
       AsyncStorage.setItem('uid', user.uid);
       AsyncStorage.setItem('displayName', user.displayName);
+      getCoach(user.uid);
       callback();
     });
 };

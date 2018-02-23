@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ProfileHeader from '../../components/ProfileHeader';
+import { getPerformances } from '../../firebase/profile/api';
 
 const SettingsButton = styled.TouchableOpacity`
   padding-right: 8px;
