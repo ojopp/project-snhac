@@ -23,20 +23,29 @@ const signUp = async (email, password, fName, lName, P10ID, callback) => {
       .catch(() => {
         // Error saving data
       });
+
+    let managerBool;
+
+    if (P10ID === 'Leader') {
+      managerBool = 'true';
+    } else {
+      managerBool = 'false';
+    }
+
     try {
       await AsyncStorage.setItem('uid', User.uid);
       await AsyncStorage.setItem('displayName', `${fName} ${lName}`);
-      await AsyncStorage.setItem('coachBool', 'false');
+      await AsyncStorage.setItem('manager', managerBool);
     } catch (error) {
       // Error saving data
     }
   }
 };
 
-const getCoach = (uid) => {
-  const coachRef = firebaseApp.database().ref(`athletes/${uid}/coach`);
-  coachRef.on('value', (coach) => {
-    AsyncStorage.setItem('coachBool', coach.val().toString());
+const getManager = (uid) => {
+  const managerRef = firebaseApp.database().ref(`athletes/${uid}/Manager`);
+  managerRef.on('value', (manager) => {
+    AsyncStorage.setItem('managerBool', manager.val().toString());
   });
 };
 
@@ -57,7 +66,7 @@ const login = async (email, password, callback) => {
 
       AsyncStorage.setItem('uid', user.uid);
       AsyncStorage.setItem('displayName', user.displayName);
-      getCoach(user.uid);
+      getManager(user.uid);
       callback();
     });
 };

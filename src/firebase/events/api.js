@@ -32,6 +32,16 @@ const getAthleteData = (callback) => {
   });
 };
 
+const getAthleteName = (uid, callback) => {
+  const athleteRef = firebaseApp.database().ref(`athletes/${uid}`);
+  athleteRef.on('value', (snap) => {
+    const name = `${snap.val().firstName} ${snap.val().lastName}`;
+    const gender = `${snap.val().gender}`;
+    const athlete = [name, gender];
+    callback(athlete);
+  });
+};
+
 const addAttendee = (eventID, teamBus) => {
   try {
     // console.warn(teamBus);
@@ -114,6 +124,7 @@ const generateLists = () => {};
 export {
   getEvents,
   getAthleteData,
+  getAthleteName,
   getAttendance,
   deleteEvent,
   createEvent,

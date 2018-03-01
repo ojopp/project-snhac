@@ -6,6 +6,7 @@ import EventDetailAthleteScreen from './EventDetailAthlete';
 import ManagerEventsScreen from './ManagerEvents';
 import EventDetailManagerScreen from './EventDetailManager';
 import CreateEventScreen from './CreateEvent';
+import AttendingAthletesScreen from './AttendingAthletes';
 
 const EventStack = StackNavigator(
   {
@@ -51,6 +52,12 @@ const ManagerEventStack = StackNavigator(
       screen: CreateEventScreen,
       navigationOptions: {
         title: 'Create New Event',
+      },
+    },
+    AttendingAthletes: {
+      screen: AttendingAthletesScreen,
+      navigationOptions: {
+        title: 'Attending Athletes',
       },
     },
   },

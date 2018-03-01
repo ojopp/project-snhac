@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 import firebaseApp from '../../firebase/firebaseConfig';
-import { getAthleteData, deleteEvent } from '../../firebase/events/api';
+import { getAthleteData, getAthleteName, deleteEvent } from '../../firebase/events/api';
 import monthParser from '../../utils/monthParser';
 import dateSuffix from '../../utils/dateSuffix';
 import eliminateZero from '../../utils/eliminateZero';
@@ -105,15 +105,34 @@ export default class EventDetailAthleteScreen extends React.Component {
 
   state = {};
 
-  generateLists(attendees) {
-    getAthleteData((callback) => {
-      const athletes = callback;
-      console.warn(Object.keys(attendees).length);
-      for (let i = 0; i < Object.keys(attendees).length; i++) {
-        console.warn(`hello ${attendees[Object.keys(attendees)[i]]}`);
-        // socreAthletesEvents(callback)
-      }
+  generateListOfAttendees(attendees) {
+    const AttendingAthletesMale = [];
+    const AttendingAthletesFemale = [];
+    for (let i = 0; i < Object.keys(attendees).length; i++) {
+      getAthleteName(Object.keys(attendees)[i], (callback) => {
+        console.warn(callback[1]);
+        if (callback[1] === 'Male') {
+          AttendingAthletesMale.push(callback[0]);
+        } else {
+          AttendingAthletesFemale.push(callback[0]);
+        }
+      });
+    }
+    console.warn(AttendingAthletesMale);
+
+    this.props.navigation.navigate('AttendingAthletes', {
+      AttendingAthletesMale,
+      AttendingAthletesFemale,
     });
+
+    // getAthleteData((callback) => {
+    //   const athletes = callback;
+    //   console.warn(Object.keys(attendees).length);
+    //   for (let i = 0; i < Object.keys(attendees).length; i++) {
+    //     console.warn(`hello ${Object.keys(attendees)[i]}`);
+    //     // socreAthletesEvents(callback)
+    //   }
+    // });
   }
 
   render() {
@@ -141,7 +160,9 @@ export default class EventDetailAthleteScreen extends React.Component {
           <AttendanceContainer>
             <AttendanceButton
               style={{ backgroundColor: '#00C853' }}
-              onPress={() => this.generateLists(this.props.navigation.state.params.item.attendees)}
+              onPress={() => {
+                this.generateListOfAttendees(this.props.navigation.state.params.item.attendees);
+              }}
             >
               <AttendanceText> Attending athletes </AttendanceText>
             </AttendanceButton>
