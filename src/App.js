@@ -19,6 +19,7 @@ export default class App extends React.Component {
     this.state = {
       loggedIn: false,
       render: false,
+      coachStatus: false,
     };
   }
 
@@ -33,7 +34,13 @@ export default class App extends React.Component {
       }
       this.setState({ render: true });
     });
+    this.getCoachStatus();
   }
+
+  getCoachStatus = async () => {
+    const fetchCoachStatus = await AsyncStorage.getItem('coachBool');
+    this.setState({ coachStatus: fetchCoachStatus });
+  };
 
   signUp = async (email, password, fName, lName, P10ID) => {
     await signUp(email, password, fName, lName, P10ID, () => {
@@ -53,19 +60,15 @@ export default class App extends React.Component {
     });
   };
 
-  getCoachStatus = async () => {
-    const coachStatus = await AsyncStorage.getItem('coachBool');
-    console.warn(`1 ${coachStatus}`);
-    return coachStatus;
-  };
-
   render() {
     if (this.state.render) {
       return (
         <MainContainer>
           <StatusBar barStyle="light-content" setBackgroundColor="#000000" />
           {this.state.loggedIn ? (
-            <MainRouter screenProps={{ signOut: this.signOut, coachBool: this.getCoachStatus() }} />
+            <MainRouter
+              screenProps={{ signOut: this.signOut, coachBool: this.state.coachStatus }}
+            />
           ) : (
             <OnboardingRouter
               screenProps={{

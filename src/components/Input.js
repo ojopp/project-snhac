@@ -7,13 +7,13 @@ const TextInput = styled.TextInput`
   height: 36px;
   font-size: 16px;
   margin-top: 10px;
-  color: #232A30EE;
-  padding-left: 12px;
+  color: #232a30ee;
+  padding-horizontal: 12px;
   align-self: center;
   border-radius: 18px;
-  border-color: #232A30;
+  border-color: #232a30;
   border-width: 2px;
-  background-color: #232A3000;
+  background-color: #232a3000;
 `;
 
 export default class Input extends Component {
@@ -41,9 +41,7 @@ export default class Input extends Component {
   constructor() {
     super();
 
-    this.state = {
-
-    };
+    this.state = {};
   }
 
   render() {

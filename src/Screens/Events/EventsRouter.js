@@ -2,8 +2,8 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AthleteEventsScreen from './Events';
-import ManagerEventsScreen from './ManagerEvents';
 import EventDetailAthleteScreen from './EventDetailAthlete';
+import ManagerEventsScreen from './ManagerEvents';
 import EventDetailManagerScreen from './EventDetailManager';
 import CreateEventScreen from './CreateEvent';
 
@@ -21,6 +21,20 @@ const EventStack = StackNavigator(
         title: 'Event Details',
       },
     },
+  },
+  {
+    navigationOptions: {
+      headerTintColor: '#000000',
+      headerStyle: {
+        backgroundColor: '#ff8c00',
+        height: 30,
+      },
+    },
+  },
+);
+
+const ManagerEventStack = StackNavigator(
+  {
     ManagerHome: {
       screen: ManagerEventsScreen,
       navigationOptions: {
@@ -57,6 +71,9 @@ export default class ProfileRouter extends React.Component {
   };
 
   render() {
+    if (this.props.screenProps.coachBool == 'false') {
+      return <ManagerEventStack screenProps={this.props.screenProps} />;
+    }
     return <EventStack screenProps={this.props.screenProps} />;
   }
 }

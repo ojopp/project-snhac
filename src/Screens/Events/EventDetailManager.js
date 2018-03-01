@@ -1,9 +1,13 @@
 import React from 'react';
-import { Animated } from 'react-native';
+import { Animated, Alert } from 'react-native';
 import styled from 'styled-components/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 import firebaseApp from '../../firebase/firebaseConfig';
-import { getAthleteData } from '../../firebase/events/api';
+import { getAthleteData, deleteEvent } from '../../firebase/events/api';
+import monthParser from '../../utils/monthParser';
+import dateSuffix from '../../utils/dateSuffix';
+import eliminateZero from '../../utils/eliminateZero';
 
 const MainContainer = styled.View`
   background-color: #ffffff;
@@ -65,7 +69,36 @@ const AttendanceText = styled.Text`
   font-size: 17;
 `;
 
+const DeleteEventButton = styled.TouchableOpacity`
+  padding-right: 8px;
+`;
+
 export default class EventDetailAthleteScreen extends React.Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerRight: (
+      <DeleteEventButton
+        onPress={() =>
+          Alert.alert('Delete Event', 'Are you sure you want to delete the event?', [
+            {
+              text: 'Yes',
+              onPress: () => {
+                navigation.goBack();
+                deleteEvent(navigation.state.params.item.id);
+              },
+              style: 'cancel',
+            },
+            {
+              text: 'No',
+              onPress: () => {},
+            },
+          ])
+        }
+      >
+        <Icon name="delete" size={26} color="#232A30" />
+      </DeleteEventButton>
+    ),
+  });
+
   static propTypes = {};
 
   static defaultProps = {};
@@ -75,20 +108,30 @@ export default class EventDetailAthleteScreen extends React.Component {
   generateLists(attendees) {
     getAthleteData((callback) => {
       const athletes = callback;
-      console.warn(attendees.length);
-      for (let i = 0; i < attendees.length; i++) {
-        console.warn(`hello${athletes.attendees[(i, 1)]}`);
+      console.warn(Object.keys(attendees).length);
+      for (let i = 0; i < Object.keys(attendees).length; i++) {
+        console.warn(`hello ${attendees[Object.keys(attendees)[i]]}`);
         // socreAthletesEvents(callback)
       }
     });
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <MainContainer>
         <Header>
           <EventTitle> {this.props.navigation.state.params.item.eventName} </EventTitle>
-          <EventSub> Saturday 28th April </EventSub>
+          <EventSub>
+            {' '}
+            {eliminateZero(this.props.navigation.state.params.item.date[4])}
+            {''}
+            {this.props.navigation.state.params.item.date[5]}
+            {dateSuffix(this.props.navigation.state.params.item.date[4] +
+                this.props.navigation.state.params.item.date[5])}{' '}
+            {monthParser(this.props.navigation.state.params.item.date[2] +
+                this.props.navigation.state.params.item.date[3])}{' '}
+          </EventSub>
           <EventSub> {this.props.navigation.state.params.item.location} </EventSub>
         </Header>
         <NotesContainer>
@@ -96,6 +139,12 @@ export default class EventDetailAthleteScreen extends React.Component {
         </NotesContainer>
         <BottomContainer>
           <AttendanceContainer>
+            <AttendanceButton
+              style={{ backgroundColor: '#00C853' }}
+              onPress={() => this.generateLists(this.props.navigation.state.params.item.attendees)}
+            >
+              <AttendanceText> Attending athletes </AttendanceText>
+            </AttendanceButton>
             <AttendanceButton
               style={{ backgroundColor: '#ff8c00' }}
               onPress={() => this.generateLists(this.props.navigation.state.params.item.attendees)}

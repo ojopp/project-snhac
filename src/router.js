@@ -6,7 +6,6 @@ import OnboardingHome from './Onboarding/OnboardingHome';
 import ForgotPassword from './Onboarding/ForgotPassword';
 import HowToAthleteID from './Onboarding/HowToAthleteID';
 
-import Home from './Screens/Home/HomeRouter';
 import Events from './Screens/Events/EventsRouter';
 import Training from './Screens/Training/TrainingRouter';
 import Profile from './Screens/Profile/ProfileRouter';
@@ -59,12 +58,6 @@ export const OnboardingRouter = StackNavigator(
 
 export const MainRouter = TabNavigator(
   {
-    Home2: {
-      screen: Home,
-      navigationOptions: {
-        title: 'Home',
-      },
-    },
     Events: {
       screen: Events,
       navigationOptions: {

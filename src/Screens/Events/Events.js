@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { getEvents } from '../../firebase/events/api';
 import monthParser from '../../utils/monthParser';
+import dateSuffix from '../../utils/dateSuffix';
+import eliminateZero from '../../utils/eliminateZero';
 
 const Container = styled.View`
   flex: 1;
@@ -42,11 +44,8 @@ export default class EventsScreen extends React.Component {
   state = {
     events: [
       {
-        title: 'Loading',
-        data: [
-          { eventName: 'Ensure valid internet connection' },
-          { attendees: [{ id: '', attendence: '' }] },
-        ],
+        title: 'Loading..',
+        data: [{ eventName: 'Loading..', date: 'Ensure valid internet conection', location: '' }],
       },
     ],
   };
@@ -57,51 +56,41 @@ export default class EventsScreen extends React.Component {
       const orderedEvents = [];
       const formattedEvents = [];
 
-      for (let i = 1; i < events.length; i++) {
-        const event = events[i];
-        if (event) {
-          const currentDate = event.date;
-
-          // Data shape = [
-          //   { event.currentdate: year-Month-Day },
-          //   { data: data of event },
-          // ]
-
-          let found = false;
-
-          for (let x = 0; x < orderedEvents.length; x++) {
-            const prevEvent = orderedEvents[x - 1];
-            if (prevEvent) {
-              if (prevEvent.date < currentDate && orderedEvents[x].date > currentDate) {
-                orderedEvents.splice(x, 0, event);
-                found = true;
-              }
-            } else if (orderedEvents[x].date > currentDate) {
-              orderedEvents.splice(x, 0, event);
+      // Order events
+      for (let i = 0; i < Object.keys(events).length; i++) {
+        console.warn(events[Object.keys(events)[i]]);
+        const currentDate = events[Object.keys(events)[i]].date;
+        let found = false;
+        let x = 0;
+        if (orderedEvents.length) {
+          while (found === false) {
+            if (currentDate > orderedEvents[x].date) {
+              x += 1;
+            } else {
               found = true;
             }
           }
-          if (found === false) {
-            orderedEvents.push(event);
-          }
+          orderedEvents.splice(x, 0, events[Object.keys(events)[i]]);
+        } else {
+          orderedEvents.push(events[Object.keys(events)[i]]);
         }
       }
 
+      orderedEvents.length -= 1;
+
+      // Formatt events
       for (let n = 0; n < orderedEvents.length; n++) {
         const date = orderedEvents[n].date.toString();
         const monthNo = date[2] + date[3];
         const monthName = monthParser(monthNo);
-        const quickInfo = `${date[4] + date[5]} - ${orderedEvents[n].location}`;
         let found = false;
-
         if (orderedEvents[n - 1]) {
           if (
             orderedEvents[n - 1].date.toString()[2] + orderedEvents[n - 1].date.toString()[3] ===
             monthNo
           ) {
             found = true;
-            formattedEvents[n - 1].data.push(orderedEvents[n]);
-            // .data.push(orderedEvents[n]);
+            formattedEvents[formattedEvents.length - 1].data.push(orderedEvents[n]);
           }
         }
         if (found === false) {
@@ -117,11 +106,6 @@ export default class EventsScreen extends React.Component {
   }
 
   render() {
-    let localCoachBool;
-    this.props.screenProps.coachBool.then((result) => {
-      localCoachBool = result;
-    });
-    console.warn(`2 ${localCoachBool}`);
     const { navigate } = this.props.navigation;
     return (
       <Container>
@@ -130,15 +114,13 @@ export default class EventsScreen extends React.Component {
           renderItem={({ item }) => (
             <EventButton
               underlayColor="#232A3030"
-              onPress={() =>
-                (localCoachBool
-                  ? navigate('EventDetailAthlete', { item })
-                  : navigate('EventDetailManager', { item }))
-              }
+              onPress={() => navigate('EventDetailAthlete', { item })}
             >
               <View>
                 <EventTitle>{item.eventName}</EventTitle>
-                <EventQuickInfo>{`${item.date} - ${item.location}`} </EventQuickInfo>
+                <EventQuickInfo>
+                  {`${eliminateZero(item.date[4])}${item.date[5]}${dateSuffix(item.date[4] + item.date[5])} - ${item.location}`}
+                </EventQuickInfo>
               </View>
             </EventButton>
           )}
