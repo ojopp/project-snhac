@@ -58,11 +58,10 @@ export default class EventsScreen extends React.Component {
 
       // Order events
       for (let i = 0; i < Object.keys(events).length; i++) {
-        console.warn(events[Object.keys(events)[i]]);
         const currentDate = events[Object.keys(events)[i]].date;
         let found = false;
         let x = 0;
-        if (orderedEvents.length) {
+        if (orderedEvents.length > 0) {
           while (found === false) {
             if (currentDate > orderedEvents[x].date) {
               x += 1;

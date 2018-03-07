@@ -19,7 +19,7 @@ export default class App extends React.Component {
     this.state = {
       loggedIn: false,
       render: false,
-      coachStatus: false,
+      managerStatus: false,
     };
   }
 
@@ -34,12 +34,12 @@ export default class App extends React.Component {
       }
       this.setState({ render: true });
     });
-    this.getCoachStatus();
+    this.getManagerStatus();
   }
 
-  getCoachStatus = async () => {
-    const fetchCoachStatus = await AsyncStorage.getItem('coachBool');
-    this.setState({ coachStatus: fetchCoachStatus });
+  getManagerStatus = async () => {
+    const fetchManagerStatus = await AsyncStorage.getItem('managerBool');
+    this.setState({ managerStatus: fetchManagerStatus });
   };
 
   signUp = async (email, password, fName, lName, P10ID) => {
@@ -67,7 +67,7 @@ export default class App extends React.Component {
           <StatusBar barStyle="light-content" setBackgroundColor="#000000" />
           {this.state.loggedIn ? (
             <MainRouter
-              screenProps={{ signOut: this.signOut, coachBool: this.state.coachStatus }}
+              screenProps={{ signOut: this.signOut, managerBool: this.state.managerStatus }}
             />
           ) : (
             <OnboardingRouter

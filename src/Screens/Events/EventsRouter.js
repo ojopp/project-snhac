@@ -7,6 +7,7 @@ import ManagerEventsScreen from './ManagerEvents';
 import EventDetailManagerScreen from './EventDetailManager';
 import CreateEventScreen from './CreateEvent';
 import AttendingAthletesScreen from './AttendingAthletes';
+import GenerateTeamScreen from './GenerateTeam';
 
 const EventStack = StackNavigator(
   {
@@ -60,6 +61,12 @@ const ManagerEventStack = StackNavigator(
         title: 'Attending Athletes',
       },
     },
+    GenerateTeam: {
+      screen: GenerateTeamScreen,
+      navigationOptions: {
+        title: 'Team Sheet',
+      },
+    },
   },
   {
     navigationOptions: {
@@ -78,7 +85,7 @@ export default class ProfileRouter extends React.Component {
   };
 
   render() {
-    if (this.props.screenProps.coachBool == 'false') {
+    if (this.props.screenProps.managerBool === 'false') {
       return <ManagerEventStack screenProps={this.props.screenProps} />;
     }
     return <EventStack screenProps={this.props.screenProps} />;

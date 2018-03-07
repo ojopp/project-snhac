@@ -4,14 +4,23 @@ import firebaseApp from '../firebaseConfig';
 const signUp = async (email, password, fName, lName, P10ID, callback) => {
   const user = await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
 
+  let managerBool;
+
+  if (P10ID === 'Leader') {
+    managerBool = 'true';
+  } else {
+    managerBool = 'false';
+  }
+
   if (user) {
     callback();
     const User = firebaseApp.auth().currentUser;
     const userRef = firebaseApp.database().ref(`athletes/${User.uid}`);
     userRef.update({
-      'first-name': fName,
-      'last-name': lName,
+      firstName: fName,
+      lastName: lName,
       'power-of-10-ID': P10ID,
+      manager: managerBool,
     });
     user
       .updateProfile({
@@ -20,30 +29,22 @@ const signUp = async (email, password, fName, lName, P10ID, callback) => {
       .then(() => {
         // Update successful.
       })
-      .catch(() => {
-        // Error saving data
+      .catch((error) => {
+        console.warn(error);
       });
-
-    let managerBool;
-
-    if (P10ID === 'Leader') {
-      managerBool = 'true';
-    } else {
-      managerBool = 'false';
-    }
 
     try {
       await AsyncStorage.setItem('uid', User.uid);
       await AsyncStorage.setItem('displayName', `${fName} ${lName}`);
-      await AsyncStorage.setItem('manager', managerBool);
+      await AsyncStorage.setItem('managerBool', managerBool);
     } catch (error) {
-      // Error saving data
+      console.warn(error);
     }
   }
 };
 
 const getManager = (uid) => {
-  const managerRef = firebaseApp.database().ref(`athletes/${uid}/Manager`);
+  const managerRef = firebaseApp.database().ref(`athletes/${uid}/manager`);
   managerRef.on('value', (manager) => {
     AsyncStorage.setItem('managerBool', manager.val().toString());
   });
@@ -87,8 +88,8 @@ const forgotPassword = async (email) => {
     .then(() => {
       // Email sent.
     })
-    .catch(() => {
-      // An error happened.
+    .catch((error) => {
+      console.warn(error);
     });
 };
 

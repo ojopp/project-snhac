@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { createEvent } from '../../firebase/events/api';
 import Input from '../../components/Input';
+import MeetTimetableHeader from '../../components/MeetTimetableHeader';
 import MeetTimetableRow from '../../components/MeetTimetableRow';
 
 const MainContainer = styled.ScrollView`
@@ -41,7 +42,7 @@ const Button = styled.TouchableOpacity`
 const MeetTimetable = styled.View`
   flex: 1;
   width: 300px;
-  height: 300px;
+  height: 700px;
   align-self: center;
   margin-top: 10px;
   border-top-width: 2px;
@@ -50,7 +51,7 @@ const MeetTimetable = styled.View`
 
 const ButtonText = styled.Text``;
 
-export default class EventDetailAthleteScreen extends React.Component {
+export default class CreateEventScreen extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -59,16 +60,26 @@ export default class EventDetailAthleteScreen extends React.Component {
       id: Date(),
       eventInfo: '',
       location: '',
-      time100m: '',
-      time200m: '',
-      time400m: '',
-      time800m: '',
-      time1500m: '',
-      time110mH: '',
-      timeHJ: '',
-      timeLJ: '',
-      timePV: '',
-      timeTJ: '',
+      time100mMale: '',
+      time200mMale: '',
+      time400mMale: '',
+      time800mMale: '',
+      time1500mMale: '',
+      time110mHMale: '',
+      timeHJMale: '',
+      timeLJMale: '',
+      timePVMale: '',
+      timeTJMale: '',
+      time100mFemale: '',
+      time200mFemale: '',
+      time400mFemale: '',
+      time800mFemale: '',
+      time1500mFemale: '',
+      time110mHFemale: '',
+      timeHJFemale: '',
+      timeLJFemale: '',
+      timePVFemale: '',
+      timeTJFemale: '',
     };
   }
 
@@ -105,55 +116,107 @@ export default class EventDetailAthleteScreen extends React.Component {
             value={this.state.eventInfo}
           />
           <MeetTimetable>
+            <MeetTimetableHeader title="Men's Timetable" />
             <MeetTimetableRow
               eventName="100m"
-              onChangeText={value => this.setState({ time100m: value })}
-              value={this.state.time100m}
+              onChangeText={value => this.setState({ time100mMale: value })}
+              value={this.state.time100mMale}
             />
             <MeetTimetableRow
               eventName="200m"
-              onChangeText={value => this.setState({ time200m: value })}
-              value={this.state.time200m}
+              onChangeText={value => this.setState({ time200mMale: value })}
+              value={this.state.time200mMale}
             />
             <MeetTimetableRow
               eventName="400m"
-              onChangeText={value => this.setState({ time400m: value })}
-              value={this.state.time400m}
+              onChangeText={value => this.setState({ time400mMale: value })}
+              value={this.state.time400mMale}
             />
             <MeetTimetableRow
               eventName="800m"
-              onChangeText={value => this.setState({ time800m: value })}
-              value={this.state.time800m}
+              onChangeText={value => this.setState({ time800mMale: value })}
+              value={this.state.time800mMale}
             />
             <MeetTimetableRow
               eventName="1500m"
-              onChangeText={value => this.setState({ time1500m: value })}
-              value={this.state.time1500m}
+              onChangeText={value => this.setState({ time1500mMale: value })}
+              value={this.state.time1500mMale}
             />
             <MeetTimetableRow
               eventName="110mH"
-              onChangeText={value => this.setState({ time110mH: value })}
-              value={this.state.time110mH}
+              onChangeText={value => this.setState({ time110mHMale: value })}
+              value={this.state.time110mHMale}
             />
             <MeetTimetableRow
               eventName="HJ"
-              onChangeText={value => this.setState({ timeHJ: value })}
-              value={this.state.timeHJ}
+              onChangeText={value => this.setState({ timeHJMale: value })}
+              value={this.state.timeHJMale}
             />
             <MeetTimetableRow
               eventName="LJ"
-              onChangeText={value => this.setState({ timeLJ: value })}
-              value={this.state.timeLJ}
+              onChangeText={value => this.setState({ timeLJMale: value })}
+              value={this.state.timeLJMale}
             />
             <MeetTimetableRow
               eventName="PV"
-              onChangeText={value => this.setState({ timePV: value })}
-              value={this.state.timePV}
+              onChangeText={value => this.setState({ timePVMale: value })}
+              value={this.state.timePVMale}
             />
             <MeetTimetableRow
               eventName="TJ"
-              onChangeText={value => this.setState({ timeTJ: value })}
-              value={this.state.timeTJ}
+              onChangeText={value => this.setState({ timeTJMale: value })}
+              value={this.state.timeTJMale}
+            />
+            <MeetTimetableHeader title="Women's Timetable" />
+            <MeetTimetableRow
+              eventName="100m"
+              onChangeText={value => this.setState({ time100mFemale: value })}
+              value={this.state.time100mFemale}
+            />
+            <MeetTimetableRow
+              eventName="200m"
+              onChangeText={value => this.setState({ time200mFemale: value })}
+              value={this.state.time200mFemale}
+            />
+            <MeetTimetableRow
+              eventName="400m"
+              onChangeText={value => this.setState({ time400mFemale: value })}
+              value={this.state.time400mFemale}
+            />
+            <MeetTimetableRow
+              eventName="800m"
+              onChangeText={value => this.setState({ time800mFemale: value })}
+              value={this.state.time800mFemale}
+            />
+            <MeetTimetableRow
+              eventName="1500m"
+              onChangeText={value => this.setState({ time1500mFemale: value })}
+              value={this.state.time1500mFemale}
+            />
+            <MeetTimetableRow
+              eventName="110mH"
+              onChangeText={value => this.setState({ time110mHFemale: value })}
+              value={this.state.time110mHFemale}
+            />
+            <MeetTimetableRow
+              eventName="HJ"
+              onChangeText={value => this.setState({ timeHJFemale: value })}
+              value={this.state.timeHJFemale}
+            />
+            <MeetTimetableRow
+              eventName="LJ"
+              onChangeText={value => this.setState({ timeLJFemale: value })}
+              value={this.state.timeLJFemale}
+            />
+            <MeetTimetableRow
+              eventName="PV"
+              onChangeText={value => this.setState({ timePVFemale: value })}
+              value={this.state.timePVFemale}
+            />
+            <MeetTimetableRow
+              eventName="TJ"
+              onChangeText={value => this.setState({ timeTJFemale: value })}
+              value={this.state.timeTJFemale}
             />
           </MeetTimetable>
 
@@ -165,16 +228,26 @@ export default class EventDetailAthleteScreen extends React.Component {
                 this.state.eventInfo,
                 this.state.location,
                 this.state.id,
-                this.state.time100m,
-                this.state.time200m,
-                this.state.time400m,
-                this.state.time800m,
-                this.state.time1500m,
-                this.state.time110mH,
-                this.state.timeHJ,
-                this.state.timeLJ,
-                this.state.timePV,
-                this.state.timeTJ,
+                this.state.time100mMale,
+                this.state.time200mMale,
+                this.state.time400mMale,
+                this.state.time800mMale,
+                this.state.time1500mMale,
+                this.state.time110mHMale,
+                this.state.timeHJMale,
+                this.state.timeLJMale,
+                this.state.timePVMale,
+                this.state.timeTJMale,
+                this.state.time100mFemale,
+                this.state.time200mFemale,
+                this.state.time400mFemale,
+                this.state.time800mFemale,
+                this.state.time1500mFemale,
+                this.state.time110mHFemale,
+                this.state.timeHJFemale,
+                this.state.timeLJFemale,
+                this.state.timePVFemale,
+                this.state.timeTJFemale,
               );
               this.props.navigation.goBack();
             }}

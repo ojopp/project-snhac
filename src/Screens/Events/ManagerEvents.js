@@ -40,7 +40,7 @@ const NewEventButton = styled.TouchableOpacity`
   padding-right: 8px;
 `;
 
-export default class EventsScreen extends React.Component {
+export default class ManagerEventsScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     headerRight: (
       <NewEventButton onPress={() => navigation.navigate('CreateEvent')}>

@@ -31,10 +31,13 @@ const Athletes = styled.Text`
   padding: 1px;
 `;
 
-export default class EventDetailAthleteScreen extends React.Component {
-  constructor() {
-    super();
-    this.state = {};
+export default class AttendingAthleteScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      AttendingAthletesMale: props.navigation.state.params.AttendingAthletesMale,
+      AttendingAthletesFemale: props.navigation.state.params.AttendingAthletesFemale,
+    };
   }
 
   checkThenCreateEvent = () => {};
@@ -46,11 +49,11 @@ export default class EventDetailAthleteScreen extends React.Component {
       <MainContainer scroll="enabled">
         <SubContainer>
           <Coloum>
-            <Header> Male </Header>
-            <Athletes> {this.props.navigation.state.params.AttendingAthletesMale[0]} </Athletes>
+            <Header> Men </Header>
+            <Athletes> {this.state.AttendingAthletesMale[0]} </Athletes>
           </Coloum>
           <Coloum>
-            <Header> Female </Header>
+            <Header> Women </Header>
           </Coloum>
         </SubContainer>
       </MainContainer>

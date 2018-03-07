@@ -15,15 +15,15 @@ const ScrollContainer = styled.View`
 `;
 
 const Spacer = styled.View`
-padding-top: 20px;
+  padding-top: 20px;
 `;
 
 const ErrText = styled.Text`
-background-color: transparent;
-color: #ffffff;
-font-size: 14;
-align-self: center;
-height: 26px;
+  background-color: transparent;
+  color: #ffffff;
+  font-size: 14;
+  align-self: center;
+  height: 26px;
 `;
 
 const ForgotPassword = styled.TouchableOpacity`
@@ -32,7 +32,7 @@ const ForgotPassword = styled.TouchableOpacity`
 `;
 
 const ForgotPasswordText = styled.Text`
-  color: #232A30;
+  color: #232a30;
   background-color: #ffffff00;
 `;
 
@@ -46,7 +46,6 @@ export default class Login extends React.Component {
     };
   }
 
-
   onPressLogin() {
     if (this.state.email != null) {
       if (this.state.password != null) {
@@ -58,7 +57,6 @@ export default class Login extends React.Component {
       this.setState.invalidEmail = 'Please enter your email address';
     }
   }
-
 
   render() {
     const { navigate } = this.props.navigation;
@@ -80,21 +78,13 @@ export default class Login extends React.Component {
             value={this.state.password}
             secureTextEntry
           />
-          <ErrText>
-            {this.state.err}
-          </ErrText>
-          <Button
-            onPress={this.onPressLogin.bind(this)}
-            text="Log in"
-          />
+          <ErrText>{this.state.err}</ErrText>
+          <Button onPress={this.onPressLogin.bind(this)} text="Log in" />
           <ForgotPassword onPress={() => navigate('ForgotPassword')}>
-            <ForgotPasswordText>
-              Forgot password?
-            </ForgotPasswordText>
+            <ForgotPasswordText>Forgot password?</ForgotPasswordText>
           </ForgotPassword>
         </ScrollContainer>
       </MainContainer>
     );
   }
 }
-

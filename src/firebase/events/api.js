@@ -8,6 +8,13 @@ const getEvents = (callback) => {
   });
 };
 
+const getEventTimes = (event, callback) => {
+  const eventsRef = firebaseApp.database().ref(`/events/${event}/time`);
+  eventsRef.on('value', (snap) => {
+    callback(snap.val());
+  });
+};
+
 const getAttendance = (eventID, callback) => {
   try {
     // console.warn(teamBus);
@@ -26,13 +33,36 @@ const getAttendance = (eventID, callback) => {
 };
 
 const getAthleteData = (callback) => {
-  const eventsRef = firebaseApp.database().ref('/athletes');
-  eventsRef.on('value', (snap) => {
+  const ref = firebaseApp.database().ref('/athletes');
+  ref.on('value', (snap) => {
     callback(snap.val());
   });
 };
 
-const getAthleteName = (uid, callback) => {
+const getAthletesEventScores = (athlete, callback) => {
+  const eventsRef = firebaseApp.database().ref(`/athletes/${athlete}/events`);
+  eventsRef.on('value', (snap) => {
+    const events = snap.val();
+    const maleAthletesEvents = [];
+    for (let x = 0; x < Object.keys(events).length; x++) {
+      const event = events[Object.keys(events)[x]];
+      const ukScore = (501 - event.ukRank) * (1 / 500);
+      const clubScore = (11 - event.clubRank) * (1 / 10);
+      const overallScore = ukScore + clubScore;
+      const eventObject = {
+        eventName: Object.keys(events)[x],
+        eventScore: overallScore,
+      };
+      maleAthletesEvents.push(eventObject);
+    }
+    callback({
+      uid: athlete,
+      events: maleAthletesEvents,
+    });
+  });
+};
+
+const getAthleteName = async (uid, callback) => {
   const athleteRef = firebaseApp.database().ref(`athletes/${uid}`);
   athleteRef.on('value', (snap) => {
     const name = `${snap.val().firstName} ${snap.val().lastName}`;
@@ -85,16 +115,26 @@ const createEvent = (
   eventInfo,
   location,
   id,
-  time100m,
-  time200m,
-  time400m,
-  time800m,
-  time1500m,
-  time110mH,
-  timeHJ,
-  timeLJ,
-  timePV,
-  timeTJ,
+  time100mMale,
+  time200mMale,
+  time400mMale,
+  time800mMale,
+  time1500mMale,
+  time110mHMale,
+  timeHJMale,
+  timeLJMale,
+  timePVMale,
+  timeTJMale,
+  time100mFemale,
+  time200mFemale,
+  time400mFemale,
+  time800mFemale,
+  time1500mFemale,
+  time110mHFemale,
+  timeHJFemale,
+  timeLJFemale,
+  timePVFemale,
+  timeTJFemale,
 ) => {
   const eventsRef = firebaseApp.database().ref(`events/${id}`);
   eventsRef.update({
@@ -105,16 +145,26 @@ const createEvent = (
     location,
     id,
     time: {
-      time100m,
-      time200m,
-      time400m,
-      time800m,
-      time1500m,
-      time110mH,
-      timeHJ,
-      timeLJ,
-      timePV,
-      timeTJ,
+      time100mMale,
+      time200mMale,
+      time400mMale,
+      time800mMale,
+      time1500mMale,
+      time110mHMale,
+      timeHJMale,
+      timeLJMale,
+      timePVMale,
+      timeTJMale,
+      time100mFemale,
+      time200mFemale,
+      time400mFemale,
+      time800mFemale,
+      time1500mFemale,
+      time110mHFemale,
+      timeHJFemale,
+      timeLJFemale,
+      timePVFemale,
+      timeTJFemale,
     },
   });
 };
@@ -123,7 +173,9 @@ const generateLists = () => {};
 
 export {
   getEvents,
+  getEventTimes,
   getAthleteData,
+  getAthletesEventScores,
   getAthleteName,
   getAttendance,
   deleteEvent,

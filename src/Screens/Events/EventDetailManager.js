@@ -105,34 +105,64 @@ export default class EventDetailAthleteScreen extends React.Component {
 
   state = {};
 
-  generateListOfAttendees(attendees) {
+  async getAttendeesThenNavigate(event) {
     const AttendingAthletesMale = [];
     const AttendingAthletesFemale = [];
-    for (let i = 0; i < Object.keys(attendees).length; i++) {
-      getAthleteName(Object.keys(attendees)[i], (callback) => {
-        console.warn(callback[1]);
-        if (callback[1] === 'Male') {
-          AttendingAthletesMale.push(callback[0]);
-        } else {
-          AttendingAthletesFemale.push(callback[0]);
-        }
+    const attendees = event.attendees;
+    if (Object.keys(attendees).length > 0) {
+      for (let i = 0; i < Object.keys(attendees).length; i++) {
+        getAthleteName(Object.keys(attendees)[i], (athlete) => {
+          if (athlete[1] === 'Male') {
+            AttendingAthletesMale.push(athlete[0]);
+          } else {
+            AttendingAthletesFemale.push(athlete[0]);
+          }
+          if (i === Object.keys(attendees).length - 1) {
+            this.props.navigation.navigate('AttendingAthletes', {
+              AttendingAthletesMale,
+              AttendingAthletesFemale,
+              event,
+            });
+          }
+        });
+      }
+    } else {
+      this.props.navigation.navigate('AttendingAthletes', {
+        AttendingAthletesMale,
+        AttendingAthletesFemale,
+        event,
       });
     }
-    console.warn(AttendingAthletesMale);
+  }
 
-    this.props.navigation.navigate('AttendingAthletes', {
-      AttendingAthletesMale,
-      AttendingAthletesFemale,
-    });
-
-    // getAthleteData((callback) => {
-    //   const athletes = callback;
-    //   console.warn(Object.keys(attendees).length);
-    //   for (let i = 0; i < Object.keys(attendees).length; i++) {
-    //     console.warn(`hello ${Object.keys(attendees)[i]}`);
-    //     // socreAthletesEvents(callback)
-    //   }
-    // });
+  generateTeamSheet(event) {
+    const maleAthleteUIDs = [];
+    const femaleAthleteUIDs = [];
+    const attendees = event.attendees;
+    if (Object.keys(attendees).length > 0) {
+      for (let i = 0; i < Object.keys(attendees).length; i++) {
+        getAthleteName(Object.keys(attendees)[i], (athlete) => {
+          if (athlete[1] === 'Male') {
+            maleAthleteUIDs.push(Object.keys(attendees)[i]);
+          } else {
+            femaleAthleteUIDs.push(Object.keys(attendees)[i]);
+          }
+          if (i === Object.keys(attendees).length - 1) {
+            this.props.navigation.navigate('GenerateTeam', {
+              maleAthleteUIDs,
+              femaleAthleteUIDs,
+              event,
+            });
+          }
+        });
+      }
+    } else {
+      this.props.navigation.navigate('GenerateTeam', {
+        maleAthleteUIDs,
+        femaleAthleteUIDs,
+        event,
+      });
+    }
   }
 
   render() {
@@ -161,14 +191,14 @@ export default class EventDetailAthleteScreen extends React.Component {
             <AttendanceButton
               style={{ backgroundColor: '#00C853' }}
               onPress={() => {
-                this.generateListOfAttendees(this.props.navigation.state.params.item.attendees);
+                this.getAttendeesThenNavigate(this.props.navigation.state.params.item);
               }}
             >
               <AttendanceText> Attending athletes </AttendanceText>
             </AttendanceButton>
             <AttendanceButton
               style={{ backgroundColor: '#ff8c00' }}
-              onPress={() => this.generateLists(this.props.navigation.state.params.item.attendees)}
+              onPress={() => this.generateTeamSheet(this.props.navigation.state.params.item)}
             >
               <AttendanceText> Generate team </AttendanceText>
             </AttendanceButton>
