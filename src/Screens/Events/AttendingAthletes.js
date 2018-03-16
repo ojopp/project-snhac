@@ -26,7 +26,9 @@ const Header = styled.Text`
   text-decoration-line: underline;
 `;
 
-const Athletes = styled.Text`
+const Athletes = styled.View``;
+
+const Athlete = styled.Text`
   font-size: 16;
   padding: 1px;
 `;
@@ -50,10 +52,19 @@ export default class AttendingAthleteScreen extends React.Component {
         <SubContainer>
           <Coloum>
             <Header> Men </Header>
-            <Athletes> {this.state.AttendingAthletesMale[0]} </Athletes>
+            <Athletes>
+              {this.state.AttendingAthletesMale.map(athlete => (
+                <Athlete key={athlete}> {athlete} </Athlete>
+              ))}
+            </Athletes>
           </Coloum>
           <Coloum>
             <Header> Women </Header>
+            <Athletes>
+              {this.state.AttendingAthletesFemale.map(athlete => (
+                <Athlete key={athlete}> {athlete} </Athlete>
+              ))}
+            </Athletes>
           </Coloum>
         </SubContainer>
       </MainContainer>

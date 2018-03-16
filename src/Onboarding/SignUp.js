@@ -89,6 +89,7 @@ export default class SignUp extends React.Component {
                     this.state.fName,
                     this.state.lName,
                     this.state.p10ID,
+                    this.state.gender,
                   );
                 } else {
                   this.setState({ err: 'Passwords do not match' });
@@ -103,7 +104,7 @@ export default class SignUp extends React.Component {
             this.setState({ err: 'Please enter your Athlete ID' });
           }
         } else {
-          this.setState({ err: 'Please enter your Athlete ID' });
+          this.setState({ err: 'Please select your gender' });
         }
       } else {
         this.setState({ err: 'Please enter your Last name' });

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components/native';
 import PropTypes from 'prop-types';
+import { getAthleteName } from '../firebase/events/api';
 
 const TeamSheetRow = styled.View`
   flex-direction: row;
@@ -63,25 +64,46 @@ export default class Input extends Component {
   static propTypes = {
     eventName: PropTypes.string,
     eventTime: PropTypes.string,
-    aStringAthlete: PropTypes.string,
-    bStringAthlete: PropTypes.string,
+    aStringAthleteuid: PropTypes.string,
+    bStringAthleteuid: PropTypes.string,
   };
 
   static defaultProps = {
-    aStringAthlete: 'no athlete',
-    bStringAthlete: 'no athlete',
+    aStringAthleteuid: 'no athlete',
+    bStringAthleteuid: 'no athlete',
   };
 
   constructor() {
     super();
 
-    this.state = {};
+    this.state = {
+      aStringAthleteName: 'no athlete',
+      bStringAthleteName: 'no athlete',
+    };
+  }
+
+  componentDidMount() {
+    const { aStringAthleteuid, bStringAthleteuid } = this.props;
+
+    if (aStringAthleteuid !== 'no athlete') {
+      getAthleteName(aStringAthleteuid, (athlete) => {
+        this.setState({
+          aStringAthleteName: athlete[0],
+        });
+      });
+    }
+
+    if (bStringAthleteuid !== 'no athlete') {
+      getAthleteName(bStringAthleteuid, (athlete) => {
+        this.setState({
+          aStringAthleteName: athlete[0],
+        });
+      });
+    }
   }
 
   render() {
-    const {
-      eventName, eventTime, aStringAthlete, bStringAthlete,
-    } = this.props;
+    const { eventName, eventTime } = this.props;
 
     return (
       <TeamSheetRow>
@@ -92,10 +114,10 @@ export default class Input extends Component {
           <EventText>{eventTime}</EventText>
         </TeamSheetSmallCellRight>
         <TeamSheetBigCellLeft>
-          <AthleteName>{aStringAthlete}</AthleteName>
+          <AthleteName>{this.state.aStringAthleteName}</AthleteName>
         </TeamSheetBigCellLeft>
         <TeamSheetBigCellRight>
-          <AthleteName>{bStringAthlete}</AthleteName>
+          <AthleteName>{this.state.bStringAthleteName}</AthleteName>
         </TeamSheetBigCellRight>
       </TeamSheetRow>
     );

@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import firebaseApp from '../firebaseConfig';
 
-const signUp = async (email, password, fName, lName, P10ID, callback) => {
+const signUp = async (email, password, fName, lName, P10ID, gender, callback) => {
   const user = await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
 
   let managerBool;
@@ -18,6 +18,7 @@ const signUp = async (email, password, fName, lName, P10ID, callback) => {
     const userRef = firebaseApp.database().ref(`athletes/${User.uid}`);
     userRef.update({
       firstName: fName,
+      gender,
       lastName: lName,
       'power-of-10-ID': P10ID,
       manager: managerBool,

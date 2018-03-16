@@ -1,7 +1,13 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import PropTypes from 'prop-types';
 
-import { getAthletesEventScores, getEventTimes } from '../../firebase/events/api';
+import getAthleteName from '../../firebase/events/api';
+
+import generateEventList from '../../utils/generateEventList';
+import ScoreAthletes from '../../utils/scoreAthletes';
+import selectTeam from '../../utils/selectTeam';
+
 import TeamSheetHeader from '../../components/TeamSheetHeader';
 import TeamSheetRow from '../../components/TeamSheetRow';
 
@@ -25,74 +31,40 @@ const Header = styled.Text`
   text-decoration-line: underline;
 `;
 
+const View = styled.View``;
+
 export default class GenerateTeamScreen extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      maleTeam: {},
+      femaleTeam: {},
+      name: '',
+    };
   }
 
-  componentDidMount() {
-    this.ScoreAthletes();
-  }
-
-  convertTimeToMins(time) {
-    const hours = time[0] + time[1];
-    const mins = time[3] + time[4];
-    return parseInt(hours * 60 + parseInt(mins));
-  }
-
-  findClashes(timetable) {
-    const eventObjects = [];
-    for (let i = 0; i < Object.keys(timetable).length; i++) {
-      const mainPreTime = this.convertTimeToMins(timetable[Object.keys(timetable)[i]]) - 50;
-      const mainPostTime = this.convertTimeToMins(timetable[Object.keys(timetable)[i]]) + 50;
-      const eventClashes = [];
-      for (let x = 0; x < Object.keys(timetable).length; x++) {
-        if (Object.keys(timetable)[i] !== Object.keys(timetable)[x]) {
-          const checkTime = this.convertTimeToMins(timetable[Object.keys(timetable)[x]]);
-          if (mainPreTime < checkTime && mainPostTime > checkTime) {
-            eventClashes.push(Object.keys(timetable)[x]);
-          }
-        }
-      }
-      eventObjects.push({
-        event: Object.keys(timetable)[i],
-        clashes: eventClashes,
-      });
-    }
-    return eventObjects;
-  }
-
-  ScoreAthletes() {
-    // object = [
-    //   {
-    //     uid: 'uid',
-    //     events: [{
-    //       eventName: 'eventName',
-    //       eventScore: 'eventscore'
-    //     }]
-    //   }
-    // ]
+  componentWillMount() {
     const { maleAthleteUIDs, femaleAthleteUIDs, event } = this.props.navigation.state.params;
-    const maleEventScores = [];
-    const femaleEventScores = [];
-    const eventClashes = [];
 
-    // Gets initial scores and creates the array of male athlete objects
-    for (let athlete = 0; athlete < maleAthleteUIDs.length; athlete++) {
-      getAthletesEventScores(maleAthleteUIDs[athlete], (athletesEventScores) => {
-        maleEventScores.push(athletesEventScores);
-      });
-    }
-    // Gets initial scores and creates the array of female athlete objects
-    for (let athlete = 0; athlete < femaleAthleteUIDs.length; athlete++) {
-      getAthletesEventScores(femaleAthleteUIDs[athlete], (athletesEventScores) => {
-        femaleEventScores.push(athletesEventScores);
-      });
-    }
+    const maleEventScores = ScoreAthletes(maleAthleteUIDs, event);
+    const femaleEventScores = ScoreAthletes(femaleAthleteUIDs, event);
+    const eventLists = [];
 
-    getEventTimes(event.id, timetable => eventClashes.push(this.findClashes(timetable)));
-    console.warn(eventClashes);
+    for (let eventNo = 0; eventNo < Object.keys(event.time).length; eventNo++) {
+      const eventName = Object.keys(event.time)[eventNo].replace('time', '');
+      eventLists.push(generateEventList(eventName, maleEventScores));
+    }
+    selectTeam(event.time, eventLists).then((value) => {
+      this.setState({ maleTeam: value });
+    });
+
+    for (let eventNo = 0; eventNo < Object.keys(event.time).length; eventNo++) {
+      const eventName = Object.keys(event.time)[eventNo].replace('time', '');
+      eventLists.push(generateEventList(eventName, femaleEventScores));
+    }
+    selectTeam(event.time, eventLists).then((value) => {
+      this.setState({ femaleTeam: value });
+    });
   }
 
   render() {
@@ -103,12 +75,34 @@ export default class GenerateTeamScreen extends React.Component {
         <Header> Men's Team </Header>
         <TeamSheet>
           <TeamSheetHeader />
-          <TeamSheetRow
-            eventName="100m"
-            eventTime="10:00"
-            aStringAthlete="Oscar Jopp"
-            bStringAthlete="Peter Keefe"
-          />
+          <View>
+            {this.state.maleTeam
+              ? Object.keys(this.state.maleTeam).map(item => (
+                <TeamSheetRow
+                  key={item}
+                  eventName={item}
+                  eventTime={this.state.maleTeam[item].time}
+                  aStringAthleteuid={this.state.maleTeam[item].athlete}
+                />
+                ))
+              : null}
+          </View>
+        </TeamSheet>
+        <Header> Women's Team </Header>
+        <TeamSheet>
+          <TeamSheetHeader />
+          <View>
+            {this.state.team
+              ? Object.keys(this.state.femaleTeam).map(item => (
+                <TeamSheetRow
+                  key={item}
+                  eventName={item}
+                  eventTime={this.state.femaleTeam[item].time}
+                  aStringAthleteuid={this.state.femaleTeam[item].athlete}
+                />
+                ))
+              : null}
+          </View>
         </TeamSheet>
       </MainContainer>
     );

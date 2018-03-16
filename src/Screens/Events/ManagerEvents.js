@@ -53,7 +53,13 @@ export default class ManagerEventsScreen extends React.Component {
     events: [
       {
         title: 'Loading..',
-        data: [{ eventName: 'Loading..', date: 'Ensure valid internet conection', location: '' }],
+        data: [
+          {
+            eventName: 'Loading..',
+            date: '000001',
+            location: 'Ensure you have a valid internet conection',
+          },
+        ],
       },
     ],
   };

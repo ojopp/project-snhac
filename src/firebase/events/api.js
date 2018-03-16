@@ -74,7 +74,6 @@ const getAthleteName = async (uid, callback) => {
 
 const addAttendee = (eventID, teamBus) => {
   try {
-    // console.warn(teamBus);
     AsyncStorage.getItem('uid').then((uid) => {
       firebaseApp
         .database()
@@ -91,7 +90,6 @@ const addAttendee = (eventID, teamBus) => {
 
 const removeAttendee = (eventID) => {
   try {
-    // console.warn(teamBus);
     AsyncStorage.getItem('uid').then((uid) => {
       firebaseApp
         .database()
